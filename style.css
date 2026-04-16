@@ -1,0 +1,388 @@
+/* ===== 婚禮外包商整理 — 共用樣式 ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --rose:    #c9927a;
+  --rose-dk: #8b5e52;
+  --rose-lt: #f0ddd6;
+  --cream:   #fdf8f4;
+  --card-bg: #ffffff;
+  --border:  #e8d8cc;
+  --text:    #3a2a24;
+  --muted:   #a08070;
+  --green:   #0f5132;
+  --green-bg:#d1e7dd;
+  --red:     #842029;
+  --red-bg:  #f8d7da;
+  --yellow:  #856404;
+  --yellow-bg:#fff3cd;
+}
+
+body {
+  font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+nav {
+  background: var(--rose-dk);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+
+nav .nav-brand {
+  color: #fff;
+  font-size: .85rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 14px 20px 14px 0;
+  border-right: 1px solid rgba(255,255,255,.25);
+  margin-right: 4px;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+nav a {
+  color: rgba(255,255,255,.82);
+  text-decoration: none;
+  font-size: .8rem;
+  padding: 14px 14px;
+  letter-spacing: 1px;
+  transition: color .15s, background .15s;
+  white-space: nowrap;
+}
+
+nav a:hover, nav a.active {
+  color: #fff;
+  background: rgba(255,255,255,.12);
+}
+
+/* ── PAGE HEADER ── */
+.page-header {
+  text-align: center;
+  padding: 44px 20px 32px;
+}
+
+.page-header .vendor-icon {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem;
+  margin: 0 auto 16px;
+}
+
+.page-header h1 {
+  font-size: 1.8rem;
+  color: var(--rose-dk);
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+}
+
+.page-header .subtitle {
+  color: var(--muted);
+  font-size: .9rem;
+  letter-spacing: 1px;
+}
+
+/* ── CONTAINER ── */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+
+.container-wide {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+
+/* ── CARDS ── */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(139,94,82,.06);
+}
+
+.card-header {
+  background: var(--rose-lt);
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-header h2 {
+  font-size: 1rem;
+  color: var(--rose-dk);
+  letter-spacing: 1px;
+}
+
+.card-body { padding: 20px 22px; }
+
+/* ── INFO ROWS ── */
+.info-grid {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  row-gap: 10px;
+  column-gap: 12px;
+}
+
+.info-label {
+  color: var(--muted);
+  font-size: .8rem;
+  padding-top: 1px;
+}
+
+.info-value {
+  font-size: .88rem;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.info-value strong { color: var(--rose-dk); }
+
+hr.dashed {
+  border: none;
+  border-top: 1px dashed var(--border);
+  margin: 16px 0;
+}
+
+/* ── PACKAGE BOX ── */
+.pkg {
+  background: #fff9f6;
+  border-left: 3px solid var(--rose);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  font-size: .84rem;
+  line-height: 1.75;
+  color: #555;
+}
+
+.pkg .pkg-title {
+  font-weight: 700;
+  color: var(--rose-dk);
+  margin-bottom: 5px;
+  font-size: .9rem;
+}
+
+.pkg .pkg-price {
+  display: inline-block;
+  background: var(--rose-dk);
+  color: #fff;
+  font-size: .78rem;
+  padding: 2px 10px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* ── PRICE TABLE ── */
+.price-box {
+  background: var(--cream);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-top: 16px;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: .86rem;
+  padding: 5px 0;
+  color: #555;
+}
+
+.price-row.total {
+  font-weight: 700;
+  font-size: .95rem;
+  color: var(--rose-dk);
+  border-top: 1px solid var(--border);
+  margin-top: 6px;
+  padding-top: 10px;
+}
+
+.price-row.paid   { color: var(--green); }
+.price-row.remain { color: var(--red); font-weight: 600; }
+.price-row.strike span:last-child { text-decoration: line-through; color: var(--muted); }
+
+/* ── BADGE ── */
+.badge {
+  display: inline-block;
+  font-size: .72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: .5px;
+}
+
+.badge-partial  { background: var(--yellow-bg); color: var(--yellow); }
+.badge-paid     { background: var(--green-bg);  color: var(--green);  }
+.badge-pending  { background: var(--red-bg);    color: var(--red);    }
+
+/* ── TAG (category) ── */
+.tag {
+  display: inline-block;
+  font-size: .72rem;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 20px;
+  letter-spacing: .5px;
+  margin-bottom: 6px;
+}
+
+.tag-photo   { background:#ede9fe; color:#5b21b6; }
+.tag-instant { background:#fce7f3; color:#9d174d; }
+.tag-invite  { background:#dbeafe; color:#1e40af; }
+.tag-cake    { background:#dcfce7; color:#166534; }
+.tag-beauty  { background:#fef3c7; color:#92400e; }
+
+/* ── OVERVIEW GRID ── */
+.vendor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 8px;
+}
+
+.vendor-tile {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px;
+  text-decoration: none;
+  color: var(--text);
+  transition: box-shadow .2s, transform .2s;
+  display: block;
+}
+
+.vendor-tile:hover {
+  box-shadow: 0 6px 20px rgba(139,94,82,.14);
+  transform: translateY(-2px);
+}
+
+.vendor-tile .tile-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+}
+
+.vendor-tile h3 {
+  font-size: 1.05rem;
+  color: var(--rose-dk);
+  margin-bottom: 4px;
+}
+
+.vendor-tile .tile-cat {
+  font-size: .78rem;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.vendor-tile .tile-amount {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--rose-dk);
+  margin-bottom: 4px;
+}
+
+.vendor-tile .tile-note {
+  font-size: .78rem;
+  color: var(--muted);
+  margin-top: 10px;
+}
+
+.vendor-tile .tile-arrow {
+  float: right;
+  color: var(--rose);
+  font-size: 1.1rem;
+  margin-top: -2px;
+}
+
+/* ── SUMMARY BAR (overview) ── */
+.summary-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  margin: 0 0 36px;
+}
+
+.summary-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 28px;
+  text-align: center;
+  min-width: 130px;
+}
+
+.summary-card .s-label {
+  font-size: .72rem;
+  color: var(--muted);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.summary-card .s-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--rose-dk);
+}
+
+/* ── LIST ── */
+ul.checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul.checklist li {
+  font-size: .84rem;
+  padding: 4px 0;
+  color: #555;
+  display: flex;
+  gap: 8px;
+}
+
+ul.checklist li::before { content: "・"; color: var(--rose); flex-shrink: 0; }
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  padding: 28px 20px;
+  font-size: .78rem;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  letter-spacing: 1px;
+}
+
+/* ── TWO COL LAYOUT ── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 640px) {
+  .two-col { grid-template-columns: 1fr; }
+  nav a { padding: 10px 10px; font-size: .75rem; }
+  .vendor-grid { grid-template-columns: 1fr; }
+  .page-header h1 { font-size: 1.4rem; }
+}
