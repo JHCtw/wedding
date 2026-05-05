@@ -276,14 +276,14 @@
     var editStyle = editMode ? '' : ' style="display:none;"';
 
     return (
-      '<div class="tl-item" data-id="' + esc(String(ev.id)) + '">' +
+      '<div class="tl-item' + (isPast ? ' tl-item-past' : '') + '" data-id="' + esc(String(ev.id)) + '">' +
         '<div class="tl-left">' +
           '<div class="tl-dot ' + dotCls + '"></div>' +
           '<div class="tl-line"></div>' +
         '</div>' +
         '<div class="tl-right">' +
           '<div class="' + dateCls + '">' + fmtDate(ev.date) + todayTag + '</div>' +
-          '<div class="tl-card">' +
+          '<div class="tl-card tl-card-' + (ev.status || 'note') + '">' +
             '<div class="tl-view"' + viewStyle + '>' +
               '<div class="tl-title-row">' +
                 '<span class="tl-title-text">' + esc(ev.title) + '</span>' +
