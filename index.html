@@ -130,7 +130,10 @@
         <span>🗓️</span>
         <h2>婚禮時間軸</h2>
       </div>
-      <button class="tl-add-btn" onclick="timelineAddNew()">＋ 新增事項</button>
+      <div class="tl-add-btns">
+        <button class="tl-add-btn" onclick="timelineAddVendor()">＋ 外包商事項</button>
+        <button class="tl-add-btn tl-add-btn-todo" onclick="timelineAddTodo()">＋ 待辦事項</button>
+      </div>
       <span id="sync-status" style="font-size:.72rem;letter-spacing:.5px;color:var(--muted);"></span>
     </div>
     <div class="card-body">
@@ -148,18 +151,13 @@
 
   var STORAGE_KEY = 'wedding_timeline_v1';
 
-  var DEFAULT_EVENTS = [
-    { id: 1,  date: '2025-04-11', title: 'SOSI FOTO　合約簽訂・訂金',           amount: 'NT$53,000',    status: 'paid'    },
-    { id: 2,  date: '2025-04-12', title: 'YES先生　婚禮錄影・訂金',             amount: 'NT$3,000',     status: 'paid'    },
-    { id: 3,  date: '2025-06-10', title: '印卡讚　合約簽訂・定金',              amount: 'NT$5,070',     status: 'paid'    },
-    { id: 4,  date: '2026-01-24', title: '蒙恩聽障烘焙坊　喜餅訂購',           amount: '依盒數計',     status: 'partial' },
-    { id: 5,  date: '2026-04-13', title: '婚前保養　護膚療程合約簽訂',          amount: '約 NT$40,609', status: 'partial' },
-    { id: 6,  date: '2026-04-16', title: 'YES先生　婚禮錄影・第二期款',         amount: 'NT$17,000',    status: 'paid'    },
-    { id: 7,  date: '2026-09-17', title: '蒙恩聽障烘焙坊　喜餅取貨（須結清）', amount: '—',            status: 'pending' },
-    { id: 8,  date: '2026-12-06', title: 'YES先生　婚禮錄影・尾款',            amount: 'NT$38,000',    status: 'pending' },
-    { id: 9,  date: '2026-12-06', title: '印卡讚　尾款（簽到日付清）',          amount: 'NT$28,800',    status: 'pending' },
-    { id: 10, date: '2026-12-06', title: 'SOSI FOTO　婚禮攝影尾款',            amount: 'NT$6,600',     status: 'pending' },
-  ];
+  var VENDOR_MAP = {
+    sosi:    { label: 'SOSI FOTO',      cls: 'tag-photo'   },
+    inkajan: { label: '印卡讚',          cls: 'tag-instant' },
+    mongen:  { label: '蒙恩聽障烘焙坊', cls: 'tag-cake'    },
+    mryes:   { label: 'Mr. Yes',         cls: 'tag-video'   },
+    beauty:  { label: '婚前保養',        cls: 'tag-beauty'  },
+  };
 
   var STATUS_MAP = {
     paid:    { label: '已付',     cls: 'badge-paid'    },
@@ -168,12 +166,35 @@
     note:    { label: '備註',     cls: 'badge-note'    },
   };
 
+  var DEFAULT_EVENTS = [
+    { id: 1,  type: 'vendor', vendor: 'sosi',    date: '2025/04/11', title: 'SOSI FOTO　合約簽訂・訂金',           amount: 'NT$53,000',    status: 'paid'    },
+    { id: 2,  type: 'vendor', vendor: 'mryes',   date: '2025/04/12', title: 'YES先生　婚禮錄影・訂金',             amount: 'NT$3,000',     status: 'paid'    },
+    { id: 3,  type: 'vendor', vendor: 'inkajan', date: '2025/06/10', title: '印卡讚　合約簽訂・定金',              amount: 'NT$5,070',     status: 'paid'    },
+    { id: 4,  type: 'vendor', vendor: 'mongen',  date: '2026/01/24', title: '蒙恩聽障烘焙坊　喜餅訂購',           amount: '依盒數計',     status: 'partial' },
+    { id: 5,  type: 'vendor', vendor: 'beauty',  date: '2026/04/13', title: '婚前保養　護膚療程合約簽訂',          amount: '約 NT$40,609', status: 'partial' },
+    { id: 6,  type: 'vendor', vendor: 'mryes',   date: '2026/04/16', title: 'YES先生　婚禮錄影・第二期款',         amount: 'NT$17,000',    status: 'paid'    },
+    { id: 7,  type: 'vendor', vendor: 'mongen',  date: '2026/09/17', title: '蒙恩聽障烘焙坊　喜餅取貨（須結清）', amount: '—',            status: 'pending' },
+    { id: 8,  type: 'vendor', vendor: 'mryes',   date: '2026/12/06', title: 'YES先生　婚禮錄影・尾款',            amount: 'NT$38,000',    status: 'pending' },
+    { id: 9,  type: 'vendor', vendor: 'inkajan', date: '2026/12/06', title: '印卡讚　尾款（簽到日付清）',          amount: 'NT$28,800',    status: 'pending' },
+    { id: 10, type: 'vendor', vendor: 'sosi',    date: '2026/12/06', title: 'SOSI FOTO　婚禮攝影尾款',            amount: 'NT$6,600',     status: 'pending' },
+  ];
+
   var pendingNew = null;
 
   var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxHaRKuoe1wRKKYTF-LwadJBg3wIM1h0mZ3smAMsU3VuepApKTxG3rJUP5U1eu8fMTMGQ/exec';
 
+  function todayStr() { return new Date().toISOString().slice(0, 10).replace(/-/g, '/'); }
+  function dateToInput(d) { return String(d || '').slice(0, 10).replace(/\//g, '-'); }
+  function fmtDate(d) { return String(d || '').slice(0, 10); }
+
+  function migrateEvent(ev) {
+    return Object.assign({ type: 'vendor', vendor: '', todos: [], amount: '', status: 'note' }, ev, {
+      date: String(ev.date || '').slice(0, 10).replace(/-/g, '/')
+    });
+  }
+
   function jsonp(url, cb) {
-    var name = '_wt' + Date.now();
+    var name = '_wt' + Date.now() + Math.floor(Math.random() * 10000);
     var s = document.createElement('script');
     s.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + name;
     window[name] = function (data) {
@@ -224,7 +245,9 @@
   }
 
   function getEvents() {
-    return loadEvents() || JSON.parse(JSON.stringify(DEFAULT_EVENTS));
+    var raw = loadEvents();
+    var events = raw || JSON.parse(JSON.stringify(DEFAULT_EVENTS));
+    return events.map(migrateEvent);
   }
 
   function esc(s) {
@@ -232,8 +255,6 @@
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
-
-  function fmtDate(d) { return String(d || '').slice(0, 10).replace(/-/g, '/'); }
 
   function renderTodos(ev) {
     var items = (ev.todos || []).map(function (t) {
@@ -260,31 +281,62 @@
   }
 
   function renderItem(ev, editMode) {
-    var s = STATUS_MAP[ev.status] || STATUS_MAP.note;
-    var today = new Date().toISOString().slice(0, 10);
+    var today = todayStr();
     var isPast = ev.date < today;
     var isToday = ev.date === today;
-    var dotCls = 'tl-dot-' + (ev.status || 'note');
+    var isVendor = ev.type !== 'todo';
+    var s = STATUS_MAP[ev.status] || STATUS_MAP.note;
+    var dotCls = isVendor ? 'tl-dot-' + (ev.status || 'note') : 'tl-dot-todo';
+    var cardCls = 'tl-card ' + (isVendor ? 'tl-card-' + (ev.status || 'note') : 'tl-card-todo');
     var dateCls = 'tl-date-label' + (isPast ? ' tl-past' : '');
     var todayTag = isToday ? '<span class="tl-today-tag">今日</span>' : '';
 
-    var selectOpts = Object.keys(STATUS_MAP).map(function (k) {
-      return '<option value="' + k + '"' + (ev.status === k ? ' selected' : '') + '>' + STATUS_MAP[k].label + '</option>';
-    }).join('');
+    var typeTag = '';
+    if (isVendor && ev.vendor && VENDOR_MAP[ev.vendor]) {
+      var vm = VENDOR_MAP[ev.vendor];
+      typeTag = '<span class="tag ' + vm.cls + ' tl-type-tag">' + vm.label + '</span>';
+    } else if (!isVendor) {
+      typeTag = '<span class="tl-todo-type-tag">待辦</span>';
+    }
+
+    var badgeHtml = isVendor
+      ? '<span class="badge ' + s.cls + (ev.amount ? ' tl-badge-clickable' : '') + '"' +
+          (ev.amount ? ' onclick="timelineCycleStatus(this)" title="點擊切換狀態"' : '') + '>' +
+          s.label + (ev.amount ? ' ↻' : '') + '</span>'
+      : '';
 
     var viewStyle = editMode ? ' style="display:none;"' : '';
     var editStyle = editMode ? '' : ' style="display:none;"';
 
+    var vendorOpts = '<option value="">（請選擇外包商）</option>' +
+      Object.keys(VENDOR_MAP).map(function (k) {
+        return '<option value="' + k + '"' + (ev.vendor === k ? ' selected' : '') + '>' + VENDOR_MAP[k].label + '</option>';
+      }).join('');
+
+    var statusOpts = Object.keys(STATUS_MAP).map(function (k) {
+      return '<option value="' + k + '"' + (ev.status === k ? ' selected' : '') + '>' + STATUS_MAP[k].label + '</option>';
+    }).join('');
+
+    var editFormRows = isVendor
+      ? '<label>外包商</label><select class="tl-inp" data-field="vendor">' + vendorOpts + '</select>' +
+        '<label>日期</label><input type="date" class="tl-inp" data-field="date" value="' + esc(dateToInput(ev.date)) + '" />' +
+        '<label>事項</label><input type="text" class="tl-inp" data-field="title" value="' + esc(ev.title) + '" placeholder="事項說明（必填）" />' +
+        '<label>金額</label><input type="text" class="tl-inp" data-field="amount" value="' + esc(ev.amount || '') + '" placeholder="NT$0（可留空）" />' +
+        '<label>狀態</label><select class="tl-inp" data-field="status">' + statusOpts + '</select>'
+      : '<label>日期</label><input type="date" class="tl-inp" data-field="date" value="' + esc(dateToInput(ev.date)) + '" />' +
+        '<label>主旨</label><input type="text" class="tl-inp" data-field="title" value="' + esc(ev.title) + '" placeholder="代辦事項主旨（必填）" />';
+
     return (
-      '<div class="tl-item' + (isPast ? ' tl-item-past' : '') + '" data-id="' + esc(String(ev.id)) + '">' +
+      '<div class="tl-item' + (isPast ? ' tl-item-past' : '') + '" data-id="' + esc(String(ev.id)) + '" data-type="' + esc(ev.type || 'vendor') + '">' +
         '<div class="tl-left">' +
           '<div class="tl-dot ' + dotCls + '"></div>' +
           '<div class="tl-line"></div>' +
         '</div>' +
         '<div class="tl-right">' +
           '<div class="' + dateCls + '">' + fmtDate(ev.date) + todayTag + '</div>' +
-          '<div class="tl-card tl-card-' + (ev.status || 'note') + '">' +
+          '<div class="' + cardCls + '">' +
             '<div class="tl-view"' + viewStyle + '>' +
+              (typeTag ? '<div class="tl-type-tag-row">' + typeTag + '</div>' : '') +
               '<div class="tl-title-row">' +
                 '<span class="tl-title-text">' + esc(ev.title) + '</span>' +
                 '<div class="tl-btns">' +
@@ -292,21 +344,12 @@
                   '<button class="tl-btn-icon" onclick="timelineDelete(this)" title="刪除">🗑️</button>' +
                 '</div>' +
               '</div>' +
-              (ev.amount ? '<div class="tl-amount-text">' + esc(ev.amount) + '</div>' : '') +
-              '<span class="badge ' + s.cls + '">' + s.label + '</span>' +
+              (isVendor && ev.amount ? '<div class="tl-amount-text">' + esc(ev.amount) + '</div>' : '') +
+              badgeHtml +
               renderTodos(ev) +
             '</div>' +
             '<div class="tl-edit"' + editStyle + '>' +
-              '<div class="tl-edit-grid">' +
-                '<label>日期</label>' +
-                '<input type="date" class="tl-inp" data-field="date" value="' + esc(String(ev.date || '').slice(0, 10)) + '" />' +
-                '<label>事項</label>' +
-                '<input type="text" class="tl-inp" data-field="title" value="' + esc(ev.title) + '" placeholder="事項說明" />' +
-                '<label>金額</label>' +
-                '<input type="text" class="tl-inp" data-field="amount" value="' + esc(ev.amount || '') + '" placeholder="NT$0（可留空）" />' +
-                '<label>狀態</label>' +
-                '<select class="tl-inp" data-field="status">' + selectOpts + '</select>' +
-              '</div>' +
+              '<div class="tl-edit-grid">' + editFormRows + '</div>' +
               '<div class="tl-edit-actions">' +
                 '<button class="tl-btn-save" onclick="timelineSave(this)">儲存</button>' +
                 '<button class="tl-btn-cancel" onclick="timelineCancelEdit(this)">取消</button>' +
@@ -324,7 +367,7 @@
     var events = getEvents().sort(function (a, b) { return a.date.localeCompare(b.date); });
     var all = events.concat(pendingNew ? [pendingNew] : []);
     if (all.length === 0) {
-      container.innerHTML = '<p style="color:var(--muted);text-align:center;padding:24px 0;">尚無事項，點擊「＋ 新增事項」開始</p>';
+      container.innerHTML = '<p style="color:var(--muted);text-align:center;padding:24px 0;">尚無事項，點擊上方按鈕新增</p>';
       return;
     }
     container.innerHTML = all.map(function (ev) { return renderItem(ev, ev.id === '__new__'); }).join('');
@@ -346,18 +389,47 @@
   window.timelineSave = function (btn) {
     var item = btn.closest('.tl-item');
     var id = item.dataset.id;
+    var type = item.dataset.type || 'vendor';
     var fields = {};
-    item.querySelectorAll('.tl-inp').forEach(function (inp) { fields[inp.dataset.field] = inp.value.trim(); });
-    if (!fields.date || !fields.title) { alert('請填寫日期和事項名稱'); return; }
+    item.querySelectorAll('.tl-inp').forEach(function (inp) {
+      if (inp.dataset.field) fields[inp.dataset.field] = inp.value.trim();
+    });
+
+    if (!fields.date || !fields.title) {
+      alert('請填寫日期和' + (type === 'todo' ? '主旨' : '事項名稱'));
+      return;
+    }
+    if (type === 'vendor' && !fields.vendor) { alert('請選擇外包商'); return; }
+
+    fields.date = fields.date.replace(/-/g, '/');
+
     var events = getEvents();
     if (id === '__new__') {
-      events.push({ id: Date.now(), date: fields.date, title: fields.title, amount: fields.amount, status: fields.status });
+      events.push({
+        id: Date.now(),
+        type: type,
+        vendor: type === 'vendor' ? (fields.vendor || '') : '',
+        date: fields.date,
+        title: fields.title,
+        amount: type === 'vendor' ? (fields.amount || '') : '',
+        status: type === 'vendor' ? (fields.status || 'note') : 'note',
+        todos: [],
+      });
       pendingNew = null;
     } else {
       var numId = Number(id);
-      var idx = -1;
-      for (var i = 0; i < events.length; i++) { if (events[i].id === numId) { idx = i; break; } }
-      if (idx >= 0) events[idx] = Object.assign({}, events[idx], fields);
+      for (var i = 0; i < events.length; i++) {
+        if (events[i].id === numId) {
+          events[i] = Object.assign({}, events[i], {
+            vendor: type === 'vendor' ? (fields.vendor || '') : '',
+            date: fields.date,
+            title: fields.title,
+            amount: type === 'vendor' ? (fields.amount || '') : '',
+            status: type === 'vendor' ? (fields.status || events[i].status) : 'note',
+          });
+          break;
+        }
+      }
     }
     saveEvents(events);
     renderTimeline();
@@ -371,9 +443,9 @@
     renderTimeline();
   };
 
-  window.timelineAddNew = function () {
+  window.timelineAddVendor = function () {
     if (pendingNew) return;
-    pendingNew = { id: '__new__', date: new Date().toISOString().slice(0, 10), title: '', amount: '', status: 'note' };
+    pendingNew = { id: '__new__', type: 'vendor', vendor: '', date: todayStr(), title: '', amount: '', status: 'note', todos: [] };
     renderTimeline();
     setTimeout(function () {
       var item = document.querySelector('.tl-item[data-id="__new__"]');
@@ -383,6 +455,33 @@
         if (first) first.focus();
       }
     }, 50);
+  };
+
+  window.timelineAddTodo = function () {
+    if (pendingNew) return;
+    pendingNew = { id: '__new__', type: 'todo', vendor: '', date: todayStr(), title: '', amount: '', status: 'note', todos: [] };
+    renderTimeline();
+    setTimeout(function () {
+      var item = document.querySelector('.tl-item[data-id="__new__"]');
+      if (item) {
+        item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        var first = item.querySelector('.tl-inp');
+        if (first) first.focus();
+      }
+    }, 50);
+  };
+
+  window.timelineCycleStatus = function (badge) {
+    var item = badge.closest('.tl-item');
+    var numId = Number(item.dataset.id);
+    var events = getEvents();
+    var ev = events.find(function (e) { return e.id === numId; });
+    if (!ev) return;
+    var order = ['paid', 'partial', 'pending', 'note'];
+    var idx = order.indexOf(ev.status);
+    ev.status = order[(idx + 1) % order.length];
+    saveEvents(events);
+    renderTimeline();
   };
 
   window.todoToggle = function (cb) {
@@ -503,7 +602,7 @@
       if (sheetsEvents === null) return;
       if (!sheetsEvents.length) { syncToSheets(getEvents()); return; }
       var normalized = sheetsEvents.map(function (ev) {
-        return Object.assign({}, ev, { date: String(ev.date || '').slice(0, 10) });
+        return migrateEvent(Object.assign({}, ev, { date: String(ev.date || '').slice(0, 10) }));
       });
       localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
       renderTimeline();

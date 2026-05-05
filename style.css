@@ -364,6 +364,30 @@ ul.checklist li {
 ul.checklist li::before { content: "・"; color: var(--rose); flex-shrink: 0; }
 
 /* ── TIMELINE ── */
+.tl-add-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.tl-add-btn-todo { background: #6d28d9 !important; }
+.tl-add-btn-todo:hover { background: #8b5cf6 !important; }
+
+.tl-type-tag-row { margin-bottom: 5px; }
+.tl-type-tag { font-size: .68rem !important; padding: 1px 8px !important; margin-bottom: 0 !important; }
+
+.tl-todo-type-tag {
+  display: inline-block; font-size: .68rem; font-weight: 600;
+  padding: 1px 8px; border-radius: 20px; letter-spacing: .5px;
+  background: #ede9fe; color: #6d28d9;
+}
+
+.tl-dot-todo { border-color: #8b5cf6; box-shadow: 0 0 0 3px var(--cream), 0 0 0 5px rgba(139,92,246,.18); }
+.tl-card-todo { border-left-color: #8b5cf6; }
+
+.tl-badge-clickable {
+  cursor: pointer; user-select: none;
+  transition: opacity .15s, transform .1s;
+}
+.tl-badge-clickable:hover { opacity: .8; transform: scale(.97); }
+.tl-badge-clickable:active { transform: scale(.93); }
+
 .tl-add-btn {
   background: var(--rose-dk); color: #fff; border: none; border-radius: 8px;
   padding: 7px 16px; font-size: .8rem; cursor: pointer; font-family: inherit;
