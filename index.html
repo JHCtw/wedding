@@ -37,15 +37,15 @@
     </div>
     <div class="summary-card">
       <div class="s-label">費用總計（估）</div>
-      <div class="s-value">≈ NT$145,459</div>
+      <div class="s-value">≈ NT$200,459</div>
     </div>
     <div class="summary-card">
       <div class="s-label">已付金額（估）</div>
-      <div class="s-value">≈ NT$61,070</div>
+      <div class="s-value">≈ NT$78,070</div>
     </div>
     <div class="summary-card">
       <div class="s-label">待付金額（估）</div>
-      <div class="s-value">≈ NT$84,379</div>
+      <div class="s-value">≈ NT$122,389</div>
     </div>
   </div>
 
@@ -96,15 +96,15 @@
 
     <a class="vendor-tile" href="mryes.html">
       <span class="tile-arrow">→</span>
-      <div class="tile-icon" style="background:#dbeafe;">💌</div>
-      <div class="tag tag-invite">喜帖</div>
+      <div class="tile-icon" style="background:#dbeafe;">🎬</div>
+      <div class="tag tag-video">婚禮錄影</div>
       <h3>Mr. Yes（YES先生）</h3>
-      <div class="tile-cat">結婚喜帖訂製</div>
-      <span class="badge badge-partial">訂金已付・尾款待付</span>
-      <div class="tile-amount" style="margin-top:12px;">NT$3,000</div>
+      <div class="tile-cat">婚禮錄影服務</div>
+      <span class="badge badge-partial">部分已付・尾款待付</span>
+      <div class="tile-amount" style="margin-top:12px;">NT$58,000</div>
       <div class="tile-note">
-        喜帖圓圖款　訂金 NT$3,000 已付（2025/04/12）<br />
-        尾款：婚禮當天 2026/12/06 付清
+        首席方案＋SDE（婚展優惠）<br />
+        已付 NT$20,000・尾款 NT$38,000（婚禮當天）
       </div>
     </a>
 
@@ -123,80 +123,386 @@
 
   </div>
 
-  <!-- 付款時程提醒 -->
-  <div class="card" style="margin-top:36px;">
-    <div class="card-header">
-      <span>📅</span>
-      <h2>重要日期 &amp; 付款提醒</h2>
+  <!-- 婚禮時間軸 -->
+  <div class="card" style="margin-top:36px;" id="timeline-section">
+    <div class="card-header" style="justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span>🗓️</span>
+        <h2>婚禮時間軸</h2>
+      </div>
+      <button class="tl-add-btn" onclick="timelineAddNew()">＋ 新增事項</button>
+      <span id="sync-status" style="font-size:.72rem;letter-spacing:.5px;color:var(--muted);"></span>
     </div>
     <div class="card-body">
-      <div style="overflow-x:auto;">
-        <table style="width:100%; border-collapse:collapse; font-size:.86rem;">
-          <thead>
-            <tr style="background:var(--rose-lt); color:var(--rose-dk);">
-              <th style="padding:10px 14px; text-align:left; border-bottom:2px solid var(--border);">日期</th>
-              <th style="padding:10px 14px; text-align:left; border-bottom:2px solid var(--border);">事項</th>
-              <th style="padding:10px 14px; text-align:right; border-bottom:2px solid var(--border);">金額</th>
-              <th style="padding:10px 14px; text-align:center; border-bottom:2px solid var(--border);">狀態</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="border-bottom:1px solid var(--border);">
-              <td style="padding:10px 14px; color:var(--muted);">2025/04/11</td>
-              <td style="padding:10px 14px;">SOSI FOTO　合約簽訂・訂金</td>
-              <td style="padding:10px 14px; text-align:right;">NT$53,000</td>
-              <td style="padding:10px 14px; text-align:center;"><span class="badge badge-paid">已付</span></td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--border);">
-              <td style="padding:10px 14px; color:var(--muted);">2025/06/10</td>
-              <td style="padding:10px 14px;">印卡讚　合約簽訂・定金</td>
-              <td style="padding:10px 14px; text-align:right;">NT$5,070</td>
-              <td style="padding:10px 14px; text-align:center;"><span class="badge badge-paid">已付</span></td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--border);">
-              <td style="padding:10px 14px; color:var(--muted);">2026/01/24</td>
-              <td style="padding:10px 14px;">蒙恩聽障烘焙坊　喜餅訂購</td>
-              <td style="padding:10px 14px; text-align:right;">依盒數計</td>
-              <td style="padding:10px 14px; text-align:center;"><span class="badge badge-partial">訂金已付</span></td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--border);">
-              <td style="padding:10px 14px; color:var(--muted);">2026/04/13</td>
-              <td style="padding:10px 14px;">婚前保養　護膚療程合約簽訂</td>
-              <td style="padding:10px 14px; text-align:right;">約 NT$40,609</td>
-              <td style="padding:10px 14px; text-align:center;"><span class="badge badge-partial">合約已簽</span></td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--border);">
-              <td style="padding:10px 14px; color:var(--muted);">2025/04/12</td>
-              <td style="padding:10px 14px;">Mr. Yes　喜帖訂製・訂金</td>
-              <td style="padding:10px 14px; text-align:right;">NT$3,000</td>
-              <td style="padding:10px 14px; text-align:center;"><span class="badge badge-paid">已付</span></td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--border); background:#fff9f6;">
-              <td style="padding:10px 14px; color:var(--muted);">2026/12/06</td>
-              <td style="padding:10px 14px; font-weight:600;">Mr. Yes　喜帖尾款（婚禮當天付清）</td>
-              <td style="padding:10px 14px; text-align:right; color:var(--red);">—</td>
-              <td style="padding:10px 14px; text-align:center;"><span class="badge badge-pending">待付</span></td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--border); background:#fff9f6;">
-              <td style="padding:10px 14px; color:var(--muted);">2026/09/17</td>
-              <td style="padding:10px 14px; font-weight:600;">蒙恩聽障烘焙坊　喜餅取貨（須結清）</td>
-              <td style="padding:10px 14px; text-align:right; color:var(--red);">—</td>
-              <td style="padding:10px 14px; text-align:center;"><span class="badge badge-pending">待付清</span></td>
-            </tr>
-            <tr style="background:#fff9f6;">
-              <td style="padding:10px 14px; color:var(--muted);">2026/12/06</td>
-              <td style="padding:10px 14px; font-weight:600;">印卡讚　尾款（簽到日付清）</td>
-              <td style="padding:10px 14px; text-align:right; color:var(--red);">NT$28,800</td>
-              <td style="padding:10px 14px; text-align:center;"><span class="badge badge-pending">待付</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <div id="timeline-container"></div>
     </div>
   </div>
 
 </div>
 
 <footer>整理日期：2026 年 4 月 14 日 &nbsp;｜&nbsp; 以合約原件為準，本文件僅供參考</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var STORAGE_KEY = 'wedding_timeline_v1';
+
+  var DEFAULT_EVENTS = [
+    { id: 1,  date: '2025-04-11', title: 'SOSI FOTO　合約簽訂・訂金',           amount: 'NT$53,000',    status: 'paid'    },
+    { id: 2,  date: '2025-04-12', title: 'YES先生　婚禮錄影・訂金',             amount: 'NT$3,000',     status: 'paid'    },
+    { id: 3,  date: '2025-06-10', title: '印卡讚　合約簽訂・定金',              amount: 'NT$5,070',     status: 'paid'    },
+    { id: 4,  date: '2026-01-24', title: '蒙恩聽障烘焙坊　喜餅訂購',           amount: '依盒數計',     status: 'partial' },
+    { id: 5,  date: '2026-04-13', title: '婚前保養　護膚療程合約簽訂',          amount: '約 NT$40,609', status: 'partial' },
+    { id: 6,  date: '2026-04-16', title: 'YES先生　婚禮錄影・第二期款',         amount: 'NT$17,000',    status: 'paid'    },
+    { id: 7,  date: '2026-09-17', title: '蒙恩聽障烘焙坊　喜餅取貨（須結清）', amount: '—',            status: 'pending' },
+    { id: 8,  date: '2026-12-06', title: 'YES先生　婚禮錄影・尾款',            amount: 'NT$38,000',    status: 'pending' },
+    { id: 9,  date: '2026-12-06', title: '印卡讚　尾款（簽到日付清）',          amount: 'NT$28,800',    status: 'pending' },
+    { id: 10, date: '2026-12-06', title: 'SOSI FOTO　婚禮攝影尾款',            amount: 'NT$6,600',     status: 'pending' },
+  ];
+
+  var STATUS_MAP = {
+    paid:    { label: '已付',     cls: 'badge-paid'    },
+    partial: { label: '部分已付', cls: 'badge-partial' },
+    pending: { label: '待付',     cls: 'badge-pending' },
+    note:    { label: '備註',     cls: 'badge-note'    },
+  };
+
+  var pendingNew = null;
+
+  var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxHaRKuoe1wRKKYTF-LwadJBg3wIM1h0mZ3smAMsU3VuepApKTxG3rJUP5U1eu8fMTMGQ/exec';
+
+  function jsonp(url, cb) {
+    var name = '_wt' + Date.now();
+    var s = document.createElement('script');
+    s.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + name;
+    window[name] = function (data) {
+      try { document.head.removeChild(s); } catch (e) {}
+      delete window[name];
+      cb(null, data);
+    };
+    s.onerror = function () {
+      try { document.head.removeChild(s); } catch (e) {}
+      delete window[name];
+      cb(new Error('network'), null);
+    };
+    document.head.appendChild(s);
+  }
+
+  function setSyncStatus(msg, isErr) {
+    var el = document.getElementById('sync-status');
+    if (!el) return;
+    el.textContent = msg;
+    el.style.color = isErr ? 'var(--red)' : 'var(--muted)';
+  }
+
+  function loadFromSheets(cb) {
+    setSyncStatus('載入中…');
+    jsonp(SCRIPT_URL + '?action=read', function (err, data) {
+      if (err || !data || !data.ok) { setSyncStatus('讀取失敗 ⚠', true); cb(null); }
+      else { setSyncStatus(''); cb(data.events); }
+    });
+  }
+
+  function syncToSheets(events) {
+    setSyncStatus('同步中…');
+    var encoded = encodeURIComponent(JSON.stringify(events));
+    jsonp(SCRIPT_URL + '?action=write&data=' + encoded, function (err, data) {
+      if (err || !data || !data.ok) { setSyncStatus('同步失敗 ⚠', true); }
+      else { setSyncStatus('已同步 ✓'); setTimeout(function () { setSyncStatus(''); }, 2500); }
+    });
+  }
+
+  function loadEvents() {
+    try { var r = localStorage.getItem(STORAGE_KEY); return r ? JSON.parse(r) : null; }
+    catch (e) { return null; }
+  }
+
+  function saveEvents(events) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
+    syncToSheets(events);
+  }
+
+  function getEvents() {
+    return loadEvents() || JSON.parse(JSON.stringify(DEFAULT_EVENTS));
+  }
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function fmtDate(d) { return d.replace(/-/g, '/'); }
+
+  function renderTodos(ev) {
+    var items = (ev.todos || []).map(function (t) {
+      return (
+        '<div class="tl-todo-item" data-tid="' + t.id + '">' +
+          '<input type="checkbox" class="tl-todo-cb"' + (t.done ? ' checked' : '') + ' onchange="todoToggle(this)">' +
+          '<span class="tl-todo-text' + (t.done ? ' tl-done' : '') + '" ondblclick="todoStartEdit(this,event)">' + esc(t.text) + '</span>' +
+          '<button class="tl-todo-del" onclick="todoDelete(this)" title="刪除">✕</button>' +
+        '</div>'
+      );
+    }).join('');
+    return (
+      '<div class="tl-todos">' +
+        items +
+        '<div class="tl-todo-add-row">' +
+          '<button class="tl-todo-add-btn" onclick="todoShowInput(this)">＋ 新增細節</button>' +
+          '<div class="tl-todo-add-form" style="display:none;">' +
+            '<input class="tl-todo-inp" placeholder="輸入細節，按 Enter 儲存" onkeydown="todoInputKey(event,this)">' +
+            '<button class="tl-todo-add-confirm" onclick="todoConfirmAdd(this)">✓</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  function renderItem(ev, editMode) {
+    var s = STATUS_MAP[ev.status] || STATUS_MAP.note;
+    var today = new Date().toISOString().slice(0, 10);
+    var isPast = ev.date < today;
+    var isToday = ev.date === today;
+    var dotCls = 'tl-dot-' + (ev.status || 'note');
+    var dateCls = 'tl-date-label' + (isPast ? ' tl-past' : '');
+    var todayTag = isToday ? '<span class="tl-today-tag">今日</span>' : '';
+
+    var selectOpts = Object.keys(STATUS_MAP).map(function (k) {
+      return '<option value="' + k + '"' + (ev.status === k ? ' selected' : '') + '>' + STATUS_MAP[k].label + '</option>';
+    }).join('');
+
+    var viewStyle = editMode ? ' style="display:none;"' : '';
+    var editStyle = editMode ? '' : ' style="display:none;"';
+
+    return (
+      '<div class="tl-item" data-id="' + esc(String(ev.id)) + '">' +
+        '<div class="tl-left">' +
+          '<div class="tl-dot ' + dotCls + '"></div>' +
+          '<div class="tl-line"></div>' +
+        '</div>' +
+        '<div class="tl-right">' +
+          '<div class="' + dateCls + '">' + fmtDate(ev.date) + todayTag + '</div>' +
+          '<div class="tl-card">' +
+            '<div class="tl-view"' + viewStyle + '>' +
+              '<div class="tl-title-row">' +
+                '<span class="tl-title-text">' + esc(ev.title) + '</span>' +
+                '<div class="tl-btns">' +
+                  '<button class="tl-btn-icon" onclick="timelineEdit(this)" title="編輯">✏️</button>' +
+                  '<button class="tl-btn-icon" onclick="timelineDelete(this)" title="刪除">🗑️</button>' +
+                '</div>' +
+              '</div>' +
+              (ev.amount ? '<div class="tl-amount-text">' + esc(ev.amount) + '</div>' : '') +
+              '<span class="badge ' + s.cls + '">' + s.label + '</span>' +
+              renderTodos(ev) +
+            '</div>' +
+            '<div class="tl-edit"' + editStyle + '>' +
+              '<div class="tl-edit-grid">' +
+                '<label>日期</label>' +
+                '<input type="date" class="tl-inp" data-field="date" value="' + esc(ev.date) + '" />' +
+                '<label>事項</label>' +
+                '<input type="text" class="tl-inp" data-field="title" value="' + esc(ev.title) + '" placeholder="事項說明" />' +
+                '<label>金額</label>' +
+                '<input type="text" class="tl-inp" data-field="amount" value="' + esc(ev.amount || '') + '" placeholder="NT$0（可留空）" />' +
+                '<label>狀態</label>' +
+                '<select class="tl-inp" data-field="status">' + selectOpts + '</select>' +
+              '</div>' +
+              '<div class="tl-edit-actions">' +
+                '<button class="tl-btn-save" onclick="timelineSave(this)">儲存</button>' +
+                '<button class="tl-btn-cancel" onclick="timelineCancelEdit(this)">取消</button>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  function renderTimeline() {
+    var container = document.getElementById('timeline-container');
+    if (!container) return;
+    var events = getEvents().sort(function (a, b) { return a.date.localeCompare(b.date); });
+    var all = events.concat(pendingNew ? [pendingNew] : []);
+    if (all.length === 0) {
+      container.innerHTML = '<p style="color:var(--muted);text-align:center;padding:24px 0;">尚無事項，點擊「＋ 新增事項」開始</p>';
+      return;
+    }
+    container.innerHTML = all.map(function (ev) { return renderItem(ev, ev.id === '__new__'); }).join('');
+  }
+
+  window.timelineEdit = function (btn) {
+    var item = btn.closest('.tl-item');
+    item.querySelector('.tl-view').style.display = 'none';
+    item.querySelector('.tl-edit').style.display = 'block';
+  };
+
+  window.timelineCancelEdit = function (btn) {
+    var item = btn.closest('.tl-item');
+    if (item.dataset.id === '__new__') { pendingNew = null; renderTimeline(); return; }
+    item.querySelector('.tl-view').style.display = '';
+    item.querySelector('.tl-edit').style.display = 'none';
+  };
+
+  window.timelineSave = function (btn) {
+    var item = btn.closest('.tl-item');
+    var id = item.dataset.id;
+    var fields = {};
+    item.querySelectorAll('.tl-inp').forEach(function (inp) { fields[inp.dataset.field] = inp.value.trim(); });
+    if (!fields.date || !fields.title) { alert('請填寫日期和事項名稱'); return; }
+    var events = getEvents();
+    if (id === '__new__') {
+      events.push({ id: Date.now(), date: fields.date, title: fields.title, amount: fields.amount, status: fields.status });
+      pendingNew = null;
+    } else {
+      var numId = Number(id);
+      var idx = -1;
+      for (var i = 0; i < events.length; i++) { if (events[i].id === numId) { idx = i; break; } }
+      if (idx >= 0) events[idx] = Object.assign({}, events[idx], fields);
+    }
+    saveEvents(events);
+    renderTimeline();
+  };
+
+  window.timelineDelete = function (btn) {
+    if (!confirm('確定要刪除這個事項？')) return;
+    var item = btn.closest('.tl-item');
+    var numId = Number(item.dataset.id);
+    saveEvents(getEvents().filter(function (e) { return e.id !== numId; }));
+    renderTimeline();
+  };
+
+  window.timelineAddNew = function () {
+    if (pendingNew) return;
+    pendingNew = { id: '__new__', date: new Date().toISOString().slice(0, 10), title: '', amount: '', status: 'note' };
+    renderTimeline();
+    setTimeout(function () {
+      var item = document.querySelector('.tl-item[data-id="__new__"]');
+      if (item) {
+        item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        var first = item.querySelector('.tl-inp');
+        if (first) first.focus();
+      }
+    }, 50);
+  };
+
+  window.todoToggle = function (cb) {
+    var item = cb.closest('.tl-todo-item');
+    var eventId = Number(cb.closest('.tl-item').dataset.id);
+    var todoId = Number(item.dataset.tid);
+    var events = getEvents();
+    var ev = events.find(function (e) { return e.id === eventId; });
+    if (ev && ev.todos) {
+      var t = ev.todos.find(function (t) { return t.id === todoId; });
+      if (t) { t.done = cb.checked; saveEvents(events); }
+    }
+    var span = item.querySelector('.tl-todo-text');
+    cb.checked ? span.classList.add('tl-done') : span.classList.remove('tl-done');
+  };
+
+  window.todoDelete = function (btn) {
+    var item = btn.closest('.tl-todo-item');
+    var eventId = Number(btn.closest('.tl-item').dataset.id);
+    var todoId = Number(item.dataset.tid);
+    var events = getEvents();
+    var ev = events.find(function (e) { return e.id === eventId; });
+    if (ev && ev.todos) {
+      ev.todos = ev.todos.filter(function (t) { return t.id !== todoId; });
+      saveEvents(events);
+      item.remove();
+    }
+  };
+
+  window.todoShowInput = function (btn) {
+    var row = btn.closest('.tl-todo-add-row');
+    btn.style.display = 'none';
+    row.querySelector('.tl-todo-add-form').style.display = 'flex';
+    row.querySelector('.tl-todo-inp').focus();
+  };
+
+  window.todoInputKey = function (e, inp) {
+    if (e.key === 'Enter') { e.preventDefault(); todoConfirmAdd(inp.nextElementSibling); }
+    if (e.key === 'Escape') {
+      var row = inp.closest('.tl-todo-add-row');
+      inp.value = '';
+      row.querySelector('.tl-todo-add-form').style.display = 'none';
+      row.querySelector('.tl-todo-add-btn').style.display = '';
+    }
+  };
+
+  window.todoConfirmAdd = function (btn) {
+    var form = btn.closest('.tl-todo-add-form');
+    var row = form.closest('.tl-todo-add-row');
+    var todosDiv = form.closest('.tl-todos');
+    var inp = form.querySelector('.tl-todo-inp');
+    var text = inp.value.trim();
+    if (!text) { inp.focus(); return; }
+    var eventId = Number(btn.closest('.tl-item').dataset.id);
+    var events = getEvents();
+    var ev = events.find(function (e) { return e.id === eventId; });
+    if (!ev) return;
+    if (!ev.todos) ev.todos = [];
+    var newId = Date.now();
+    ev.todos.push({ id: newId, text: text, done: false });
+    saveEvents(events);
+    var newEl = document.createElement('div');
+    newEl.className = 'tl-todo-item';
+    newEl.dataset.tid = newId;
+    newEl.innerHTML = (
+      '<input type="checkbox" class="tl-todo-cb" onchange="todoToggle(this)">' +
+      '<span class="tl-todo-text" ondblclick="todoStartEdit(this,event)">' + esc(text) + '</span>' +
+      '<button class="tl-todo-del" onclick="todoDelete(this)" title="刪除">✕</button>'
+    );
+    todosDiv.insertBefore(newEl, row);
+    inp.value = '';
+    form.style.display = 'none';
+    row.querySelector('.tl-todo-add-btn').style.display = '';
+  };
+
+  window.todoStartEdit = function (span, e) {
+    e.preventDefault();
+    if (span.querySelector('input')) return;
+    var orig = span.textContent;
+    span.textContent = '';
+    var inp = document.createElement('input');
+    inp.className = 'tl-todo-edit-inp';
+    inp.value = orig;
+    span.appendChild(inp);
+    inp.focus();
+    inp.select();
+    function commit() {
+      var val = inp.value.trim() || orig;
+      if (val !== orig) {
+        var todoId = Number(span.closest('.tl-todo-item').dataset.tid);
+        var eventId = Number(span.closest('.tl-item').dataset.id);
+        var events = getEvents();
+        var ev = events.find(function (e) { return e.id === eventId; });
+        if (ev && ev.todos) {
+          var t = ev.todos.find(function (t) { return t.id === todoId; });
+          if (t) { t.text = val; saveEvents(events); }
+        }
+      }
+      span.textContent = val;
+    }
+    inp.addEventListener('blur', commit);
+    inp.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter') { ev.preventDefault(); inp.blur(); }
+      if (ev.key === 'Escape') { inp.removeEventListener('blur', commit); span.textContent = orig; }
+    });
+  };
+
+  document.addEventListener('DOMContentLoaded', function () {
+    renderTimeline();
+    loadFromSheets(function (sheetsEvents) {
+      if (sheetsEvents === null) return;
+      if (sheetsEvents.length === 0) {
+        syncToSheets(getEvents());
+      } else {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(sheetsEvents));
+        renderTimeline();
+      }
+    });
+  });
+})();
+</script>
 </body>
 </html>
