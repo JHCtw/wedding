@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>婚禮外包商總覽</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://accounts.google.com/gsi/client" async></script>
 </head>
 <body>
 
@@ -16,6 +17,14 @@
   <a href="mongen.html">蒙恩烘焙坊</a>
   <a href="mryes.html">Mr. Yes</a>
   <a href="beauty.html">婚前保養</a>
+  <div class="nav-auth">
+    <div id="g-btn-wrapper"></div>
+    <div id="nav-user" style="display:none;">
+      <img id="nav-avatar" class="nav-avatar" src="" alt="" />
+      <span id="nav-name"></span>
+      <button class="nav-signout" onclick="authSignOut()">登出</button>
+    </div>
+  </div>
 </nav>
 
 <div class="page-header">
@@ -130,10 +139,11 @@
         <span>🗓️</span>
         <h2>婚禮時間軸</h2>
       </div>
-      <div class="tl-add-btns">
+      <div class="tl-add-btns" style="display:none;">
         <button class="tl-add-btn" onclick="timelineAddVendor()">＋ 外包商事項</button>
         <button class="tl-add-btn tl-add-btn-todo" onclick="timelineAddTodo()">＋ 待辦事項</button>
       </div>
+      <span id="tl-login-hint" style="font-size:.78rem;color:var(--muted);letter-spacing:.3px;">🔒 請登入後才能編輯</span>
       <span id="sync-status" style="font-size:.72rem;letter-spacing:.5px;color:var(--muted);"></span>
     </div>
     <div class="card-body">
@@ -150,6 +160,7 @@
   'use strict';
 
   var STORAGE_KEY = 'wedding_timeline_v1';
+  var GOOGLE_CLIENT_ID = '687764654535-471hglnm2rse8f4jmedsut471bt2r0nq.apps.googleusercontent.com';
 
   var VENDOR_MAP = {
     sosi:    { label: 'SOSI FOTO',      cls: 'tag-photo'   },
@@ -180,8 +191,77 @@
   ];
 
   var pendingNew = null;
+  var currentUser = null; // { email, name, picture, token }
 
   var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxHaRKuoe1wRKKYTF-LwadJBg3wIM1h0mZ3smAMsU3VuepApKTxG3rJUP5U1eu8fMTMGQ/exec';
+
+  // ── Google 登入 ──
+  function parseJwtPayload(token) {
+    var b64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    while (b64.length % 4) b64 += '=';
+    return JSON.parse(decodeURIComponent(
+      atob(b64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join('')
+    ));
+  }
+
+  function authInit() {
+    if (!window.google || GOOGLE_CLIENT_ID.indexOf('YOUR_CLIENT_ID') === 0) return;
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: handleCredentialResponse,
+      auto_select: true,
+    });
+    var wrapper = document.getElementById('g-btn-wrapper');
+    if (wrapper) {
+      google.accounts.id.renderButton(wrapper, {
+        theme: 'filled_white', size: 'small', text: 'signin_with',
+        shape: 'pill', locale: 'zh-TW',
+      });
+    }
+    google.accounts.id.prompt();
+  }
+
+  function handleCredentialResponse(response) {
+    try {
+      var payload = parseJwtPayload(response.credential);
+      currentUser = { email: payload.email, name: payload.name, picture: payload.picture, token: response.credential };
+    } catch (e) { return; }
+    updateAuthUI();
+    renderTimeline();
+  }
+
+  function updateAuthUI() {
+    var btnWrapper = document.getElementById('g-btn-wrapper');
+    var userDiv = document.getElementById('nav-user');
+    if (currentUser) {
+      if (btnWrapper) btnWrapper.style.display = 'none';
+      if (userDiv) {
+        userDiv.style.display = 'flex';
+        var avatarEl = document.getElementById('nav-avatar');
+        var nameEl = document.getElementById('nav-name');
+        if (avatarEl) { avatarEl.src = currentUser.picture || ''; avatarEl.style.display = currentUser.picture ? '' : 'none'; }
+        if (nameEl) nameEl.textContent = currentUser.name || currentUser.email;
+      }
+    } else {
+      if (btnWrapper) btnWrapper.style.display = '';
+      if (userDiv) userDiv.style.display = 'none';
+    }
+    var addBtns = document.querySelector('.tl-add-btns');
+    var loginHint = document.getElementById('tl-login-hint');
+    if (addBtns) addBtns.style.display = currentUser ? '' : 'none';
+    if (loginHint) loginHint.style.display = currentUser ? 'none' : '';
+  }
+
+  window.authSignOut = function () {
+    if (window.google) google.accounts.id.disableAutoSelect();
+    currentUser = null;
+    updateAuthUI();
+    renderTimeline();
+  };
+
+  window.onGoogleLibraryLoad = authInit;
 
   function todayStr() { return new Date().toISOString().slice(0, 10).replace(/-/g, '/'); }
   function dateToInput(d) { return String(d || '').slice(0, 10).replace(/\//g, '-'); }
@@ -226,11 +306,17 @@
   }
 
   function syncToSheets(events) {
+    if (!currentUser) { setSyncStatus('請先登入才能同步 ⚠', true); return; }
     setSyncStatus('同步中…');
     var encoded = encodeURIComponent(JSON.stringify(events));
-    jsonp(SCRIPT_URL + '?action=write&data=' + encoded, function (err, data) {
-      if (err || !data || !data.ok) { setSyncStatus('同步失敗 ⚠', true); }
-      else { setSyncStatus('已同步 ✓'); setTimeout(function () { setSyncStatus(''); }, 2500); }
+    var token = encodeURIComponent(currentUser.token);
+    jsonp(SCRIPT_URL + '?action=write&data=' + encoded + '&token=' + token, function (err, data) {
+      if (err || !data || !data.ok) {
+        setSyncStatus((data && data.error) || '同步失敗 ⚠', true);
+      } else {
+        setSyncStatus('已同步 ✓');
+        setTimeout(function () { setSyncStatus(''); }, 2500);
+      }
     });
   }
 
@@ -257,30 +343,32 @@
   }
 
   function renderTodos(ev) {
+    var canEdit = !!currentUser;
     var items = (ev.todos || []).map(function (t) {
       return (
         '<div class="tl-todo-item" data-tid="' + t.id + '">' +
-          '<input type="checkbox" class="tl-todo-cb"' + (t.done ? ' checked' : '') + ' onchange="todoToggle(this)">' +
-          '<span class="tl-todo-text' + (t.done ? ' tl-done' : '') + '" ondblclick="todoStartEdit(this,event)">' + esc(t.text) + '</span>' +
-          '<button class="tl-todo-del" onclick="todoDelete(this)" title="刪除">✕</button>' +
+          '<input type="checkbox" class="tl-todo-cb"' + (t.done ? ' checked' : '') +
+            (canEdit ? ' onchange="todoToggle(this)"' : ' disabled') + '>' +
+          '<span class="tl-todo-text' + (t.done ? ' tl-done' : '') + '"' +
+            (canEdit ? ' ondblclick="todoStartEdit(this,event)"' : '') + '>' + esc(t.text) + '</span>' +
+          (canEdit ? '<button class="tl-todo-del" onclick="todoDelete(this)" title="刪除">✕</button>' : '') +
         '</div>'
       );
     }).join('');
-    return (
-      '<div class="tl-todos">' +
-        items +
-        '<div class="tl-todo-add-row">' +
+    var addRow = canEdit
+      ? '<div class="tl-todo-add-row">' +
           '<button class="tl-todo-add-btn" onclick="todoShowInput(this)">＋ 新增細節</button>' +
           '<div class="tl-todo-add-form" style="display:none;">' +
             '<input class="tl-todo-inp" placeholder="輸入細節，按 Enter 儲存" onkeydown="todoInputKey(event,this)">' +
             '<button class="tl-todo-add-confirm" onclick="todoConfirmAdd(this)">✓</button>' +
           '</div>' +
-        '</div>' +
-      '</div>'
-    );
+        '</div>'
+      : '';
+    return '<div class="tl-todos">' + items + addRow + '</div>';
   }
 
   function renderItem(ev, editMode) {
+    var canEdit = !!currentUser;
     var today = todayStr();
     var isPast = ev.date < today;
     var isToday = ev.date === today;
@@ -300,9 +388,9 @@
     }
 
     var badgeHtml = isVendor
-      ? '<span class="badge ' + s.cls + (ev.amount ? ' tl-badge-clickable' : '') + '"' +
-          (ev.amount ? ' onclick="timelineCycleStatus(this)" title="點擊切換狀態"' : '') + '>' +
-          s.label + (ev.amount ? ' ↻' : '') + '</span>'
+      ? '<span class="badge ' + s.cls + (ev.amount && canEdit ? ' tl-badge-clickable' : '') + '"' +
+          (ev.amount && canEdit ? ' onclick="timelineCycleStatus(this)" title="點擊切換狀態"' : '') + '>' +
+          s.label + (ev.amount && canEdit ? ' ↻' : '') + '</span>'
       : '';
 
     var viewStyle = editMode ? ' style="display:none;"' : '';
@@ -339,10 +427,12 @@
               (typeTag ? '<div class="tl-type-tag-row">' + typeTag + '</div>' : '') +
               '<div class="tl-title-row">' +
                 '<span class="tl-title-text">' + esc(ev.title) + '</span>' +
-                '<div class="tl-btns">' +
-                  '<button class="tl-btn-icon" onclick="timelineEdit(this)" title="編輯">✏️</button>' +
-                  '<button class="tl-btn-icon" onclick="timelineDelete(this)" title="刪除">🗑️</button>' +
-                '</div>' +
+                (canEdit
+                  ? '<div class="tl-btns">' +
+                      '<button class="tl-btn-icon" onclick="timelineEdit(this)" title="編輯">✏️</button>' +
+                      '<button class="tl-btn-icon" onclick="timelineDelete(this)" title="刪除">🗑️</button>' +
+                    '</div>'
+                  : '') +
               '</div>' +
               (isVendor && ev.amount ? '<div class="tl-amount-text">' + esc(ev.amount) + '</div>' : '') +
               badgeHtml +
@@ -590,6 +680,9 @@
   };
 
   document.addEventListener('DOMContentLoaded', function () {
+    updateAuthUI(); // 初始狀態：隱藏新增按鈕、顯示登入提示
+    if (window.google && window.google.accounts) authInit(); // GSI 已快取時的備用呼叫
+
     renderTimeline();
 
     document.getElementById('timeline-container').addEventListener('click', function (e) {
@@ -599,8 +692,7 @@
     });
 
     loadFromSheets(function (sheetsEvents) {
-      if (sheetsEvents === null) return;
-      if (!sheetsEvents.length) { syncToSheets(getEvents()); return; }
+      if (sheetsEvents === null || !sheetsEvents.length) return;
       var normalized = sheetsEvents.map(function (ev) {
         return migrateEvent(Object.assign({}, ev, { date: String(ev.date || '').slice(0, 10) }));
       });
