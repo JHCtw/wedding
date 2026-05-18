@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>外包商 — 婚禮外包商</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="vendors.js"></script>
+</head>
+<body>
+
+<nav id="main-nav">
+  <a class="nav-brand" href="index.html">季浤 ♡ 柔瑄</a>
+  <a href="index.html">總覽</a>
+</nav>
+
+<div id="vendor-page"></div>
+
+<footer>整理日期：2026 年 4 月 14 日 &nbsp;｜&nbsp; 以合約原件為準，本文件僅供參考</footer>
+
+<script>
+(function () {
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function renderChecklist(items) {
+    return '<ul class="checklist">' + items.map(function (i) { return '<li>' + i + '</li>'; }).join('') + '</ul>';
+  }
+
+  function renderPkg(block) {
+    var html = '<div class="pkg">';
+    if (block.pkgTitle) html += '<div class="pkg-title">' + block.pkgTitle + '</div>';
+    if (block.pkgPrice) html += '<div class="pkg-price">' + block.pkgPrice + '</div>';
+    if (block.note) html += '<p style="font-size:.83rem;color:#555;margin-bottom:10px;">' + block.note + '</p>';
+    if (block.items) html += renderChecklist(block.items);
+    if (block.extras) {
+      html += '<hr class="dashed" style="margin:10px 0;" />';
+      html += '<strong style="font-size:.82rem;color:var(--rose-dk);">' + block.extras.label + '</strong>';
+      html += renderChecklist(block.extras.items);
+    }
+    html += '</div>';
+    return html;
+  }
+
+  function renderPriceBox(block) {
+    var rows = block.rows.map(function (r) {
+      return '<div class="price-row' + (r.cls ? ' ' + r.cls : '') + '"><span>' + r.label + '</span><span>' + r.value + '</span></div>';
+    }).join('');
+    var note = block.note ? '<p style="font-size:.78rem;color:var(--muted);margin-top:12px;">' + block.note + '</p>' : '';
+    return '<div class="price-box">' + rows + '</div>' + note;
+  }
+
+  function renderHighlight(block) {
+    var style = 'border-left-color:' + (block.borderColor || block.color || 'var(--rose-dk)') + ';';
+    if (block.bg) style += 'background:' + block.bg + ';';
+    var html = '<div class="pkg" style="' + style + '">';
+    html += '<div class="pkg-title" style="color:' + (block.color || 'var(--rose-dk)') + ';">' + block.label + '</div>';
+    if (block.text) html += '<p style="font-size:.83rem;color:#555;line-height:1.8;">' + block.text + '</p>';
+    if (block.items) html += renderChecklist(block.items);
+    html += '</div>';
+    return html;
+  }
+
+  function renderBlock(block) {
+    switch (block.type) {
+      case 'pkg':
+        return renderPkg(block);
+      case 'price-box':
+        return renderPriceBox(block);
+      case 'highlight':
+        return renderHighlight(block);
+      case 'checklist':
+        return renderChecklist(block.items);
+      case 'note':
+        return '<p style="font-size:.84rem;color:var(--muted);line-height:1.8;">' + block.text + '</p>';
+      case 'two-col':
+        return '<div class="two-col">' +
+          block.cols.map(function (col) { return '<div>' + renderPkg(col) + '</div>'; }).join('') +
+          '</div>';
+      case 'grid-2':
+        return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
+          block.pkgs.map(function (p) { return renderPkg(Object.assign({ style: 'margin:0' }, p)); }).join('') +
+          '</div>';
+      default:
+        return '';
+    }
+  }
+
+  function renderSection(sec) {
+    var body = sec.content.map(renderBlock).join('');
+    return '<div class="card">' +
+      '<div class="card-header"><span>' + sec.icon + '</span><h2>' + sec.title + '</h2></div>' +
+      '<div class="card-body">' + body + '</div>' +
+      '</div>';
+  }
+
+  function renderInfoGrid(info) {
+    var rows = info.map(function (row) {
+      return '<span class="info-label">' + row.label + '</span><span class="info-value">' + row.value + '</span>';
+    }).join('');
+    return '<div class="card">' +
+      '<div class="card-header"><span>📋</span><h2>基本資訊</h2></div>' +
+      '<div class="card-body"><div class="info-grid">' + rows + '</div></div>' +
+      '</div>';
+  }
+
+  function buildNav(currentId) {
+    var nav = document.getElementById('main-nav');
+    nav.innerHTML = '<a class="nav-brand" href="index.html">季浤 ♡ 柔瑄</a>' +
+      '<a href="index.html">總覽</a>' +
+      VENDOR_ORDER.map(function (id) {
+        var v = VENDORS[id];
+        var cls = id === currentId ? ' class="active"' : '';
+        return '<a href="vendor.html?v=' + id + '"' + cls + '>' + v.name + '</a>';
+      }).join('');
+  }
+
+  function render(id) {
+    var v = VENDORS[id];
+    if (!v) {
+      document.getElementById('vendor-page').innerHTML = '<div class="container"><p style="padding:40px;text-align:center;color:var(--muted);">找不到廠商資料</p></div>';
+      return;
+    }
+
+    document.title = v.name + ' — 婚禮外包商';
+    buildNav(id);
+
+    var header = '<div class="page-header">' +
+      '<div class="vendor-icon" style="background:' + v.iconBg + ';">' + v.icon + '</div>' +
+      '<div class="tag ' + v.tagCls + '">' + v.category + '</div>' +
+      '<h1>' + esc(v.name) + '</h1>' +
+      '<p class="subtitle">' + v.subtitle + (v.contractDate ? '　｜　' + (v.contractLabel || '合約日') + '：' + v.contractDate : '') + '</p>' +
+      '</div>';
+
+    var sections = renderInfoGrid(v.info) + v.sections.map(renderSection).join('');
+
+    document.getElementById('vendor-page').innerHTML = header + '<div class="container">' + sections + '</div>';
+  }
+
+  var params = new URLSearchParams(window.location.search);
+  var id = params.get('v') || VENDOR_ORDER[0];
+  render(id);
+})();
+</script>
+</body>
+</html>

@@ -5,18 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>婚禮外包商總覽</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="vendors.js"></script>
   <script src="https://accounts.google.com/gsi/client" async></script>
 </head>
 <body>
 
-<nav>
+<nav id="main-nav">
   <a class="nav-brand" href="index.html">季浤 ♡ 柔瑄</a>
   <a href="index.html" class="active">總覽</a>
-  <a href="sosi.html">SOSI FOTO</a>
-  <a href="inkajan.html">印卡讚</a>
-  <a href="mongen.html">蒙恩烘焙坊</a>
-  <a href="mryes.html">Mr. Yes</a>
-  <a href="beauty.html">婚前保養</a>
   <div class="nav-auth">
     <div id="g-btn-wrapper"></div>
     <div id="nav-user" style="display:none;">
@@ -58,79 +54,8 @@
     </div>
   </div>
 
-  <!-- 廠商卡片 -->
-  <div class="vendor-grid">
-
-    <a class="vendor-tile" href="sosi.html">
-      <span class="tile-arrow">→</span>
-      <div class="tile-icon" style="background:#ede9fe;">📷</div>
-      <div class="tag tag-photo">攝影工作室</div>
-      <h3>SOSI FOTO</h3>
-      <div class="tile-cat">婚紗拍攝 ＋ 婚禮攝影紀錄</div>
-      <span class="badge badge-partial">訂金已付・尾款待付</span>
-      <div class="tile-amount" style="margin-top:12px;">NT$59,600</div>
-      <div class="tile-note">
-        已付 NT$53,000（4期）・尾款 NT$6,600<br />
-        合約日：2025/04/11　地點：台北漢來大飯店
-      </div>
-    </a>
-
-    <a class="vendor-tile" href="inkajan.html">
-      <span class="tile-arrow">→</span>
-      <div class="tile-icon" style="background:#fce7f3;">📸</div>
-      <div class="tag tag-instant">即拍服務</div>
-      <h3>印卡讚</h3>
-      <div class="tile-cat">婚禮即拍・旗艦方案</div>
-      <span class="badge badge-partial">定金已付・尾款待付</span>
-      <div class="tile-amount" style="margin-top:12px;">NT$42,070</div>
-      <div class="tile-note">
-        已付定金 NT$5,070・尾款 NT$28,800（簽到日付清）<br />
-        簽約日：2025/06/10
-      </div>
-    </a>
-
-    <a class="vendor-tile" href="mongen.html">
-      <span class="tile-arrow">→</span>
-      <div class="tile-icon" style="background:#dcfce7;">🎂</div>
-      <div class="tag tag-cake">喜餅</div>
-      <h3>蒙恩聽障烘焙坊</h3>
-      <div class="tile-cat">Amazing Grace Deaf Bakery</div>
-      <span class="badge badge-partial">訂金已付・取貨前結清</span>
-      <div class="tile-amount" style="margin-top:12px;">依盒數計算</div>
-      <div class="tile-note">
-        取貨日：2026/09/17（婚禮前 4–6 週）<br />
-        訂購日：2026/01/24　有 NT$1,000 折價券
-      </div>
-    </a>
-
-    <a class="vendor-tile" href="mryes.html">
-      <span class="tile-arrow">→</span>
-      <div class="tile-icon" style="background:#dbeafe;">🎬</div>
-      <div class="tag tag-video">婚禮錄影</div>
-      <h3>Mr. Yes（YES先生）</h3>
-      <div class="tile-cat">婚禮錄影服務</div>
-      <span class="badge badge-partial">部分已付・尾款待付</span>
-      <div class="tile-amount" style="margin-top:12px;">NT$58,000</div>
-      <div class="tile-note">
-        首席方案＋SDE（婚展優惠）<br />
-        已付 NT$20,000・尾款 NT$38,000（婚禮當天）
-      </div>
-    </a>
-
-    <a class="vendor-tile" href="beauty.html">
-      <span class="tile-arrow">→</span>
-      <div class="tile-icon" style="background:#fef3c7;">✨</div>
-      <div class="tag tag-beauty">婚前保養</div>
-      <h3>婚前護膚療程</h3>
-      <div class="tile-cat">婚禮級護膚組合（契約服務）</div>
-      <span class="badge badge-partial">合約已簽</span>
-      <div class="tile-amount" style="margin-top:12px;">約 NT$40,609</div>
-      <div class="tile-note">
-        簽約日：2026/04/13　兩份合約
-      </div>
-    </a>
-
-  </div>
+  <!-- 廠商卡片（由 vendors.js 動態渲染） -->
+  <div class="vendor-grid" id="vendor-grid"></div>
 
   <!-- 婚禮時間軸 -->
   <div class="card" style="margin-top:36px;" id="timeline-section">
@@ -158,6 +83,39 @@
 <script>
 (function () {
   'use strict';
+
+  // ── Nav ──
+  function buildNav() {
+    var nav = document.getElementById('main-nav');
+    var authHtml = nav.querySelector('.nav-auth').outerHTML;
+    nav.innerHTML =
+      '<a class="nav-brand" href="index.html">季浤 ♡ 柔瑄</a>' +
+      '<a href="index.html" class="active">總覽</a>' +
+      VENDOR_ORDER.map(function (id) {
+        return '<a href="vendor.html?v=' + id + '">' + VENDORS[id].name + '</a>';
+      }).join('') +
+      authHtml;
+  }
+
+  // ── 廠商卡片 ──
+  function buildVendorGrid() {
+    var STATUS_CLS = { paid: 'badge-paid', partial: 'badge-partial', pending: 'badge-pending', note: 'badge-note' };
+    var html = VENDOR_ORDER.map(function (id) {
+      var v = VENDORS[id];
+      var badgeCls = STATUS_CLS[v.paymentStatus] || 'badge-partial';
+      return '<a class="vendor-tile" href="vendor.html?v=' + id + '">' +
+        '<span class="tile-arrow">→</span>' +
+        '<div class="tile-icon" style="background:' + v.iconBg + ';">' + v.icon + '</div>' +
+        '<div class="tag ' + v.tagCls + '">' + v.category + '</div>' +
+        '<h3>' + v.name + '</h3>' +
+        '<div class="tile-cat">' + v.subtitle + '</div>' +
+        '<span class="badge ' + badgeCls + '">' + v.paymentBadge + '</span>' +
+        '<div class="tile-amount" style="margin-top:12px;">' + v.totalAmount + '</div>' +
+        '<div class="tile-note">' + v.tileNote + '</div>' +
+        '</a>';
+    }).join('');
+    document.getElementById('vendor-grid').innerHTML = html;
+  }
 
   var STORAGE_KEY = 'wedding_timeline_v1';
   var GOOGLE_CLIENT_ID = '687764654535-471hglnm2rse8f4jmedsut471bt2r0nq.apps.googleusercontent.com';
@@ -680,6 +638,8 @@
   };
 
   document.addEventListener('DOMContentLoaded', function () {
+    buildNav();
+    buildVendorGrid();
     updateAuthUI(); // 初始狀態：隱藏新增按鈕、顯示登入提示
     if (window.google && window.google.accounts) authInit(); // GSI 已快取時的備用呼叫
 
