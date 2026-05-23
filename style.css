@@ -408,6 +408,25 @@ ul.checklist li::before { content: "・"; color: var(--rose); flex-shrink: 0; }
 /* ── TIMELINE ── */
 .tl-add-btns { display: flex; gap: 8px; flex-wrap: wrap; }
 
+/* 月份分組標題 */
+.tl-month-group {
+  display: flex;
+  align-items: center;
+  padding: 20px 0 8px 56px;
+}
+.tl-month-group:first-child { padding-top: 4px; }
+.tl-month-label {
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: var(--muted);
+  background: var(--cream);
+  padding: 3px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
 .tl-add-btn-todo { background: #6d28d9 !important; }
 .tl-add-btn-todo:hover { background: #8b5cf6 !important; }
 
@@ -629,9 +648,29 @@ footer {
   gap: 16px;
 }
 
+/* 手機：沒有 hover，編輯/刪除按鈕要常駐顯示 */
+@media (hover: none) {
+  .tl-btn-icon { opacity: 0.38; }
+  .tl-todo-del { opacity: 0.5; }
+}
+
 @media (max-width: 640px) {
   .two-col { grid-template-columns: 1fr; }
   nav a { padding: 10px 10px; font-size: .75rem; }
   .vendor-grid { grid-template-columns: 1fr; }
   .page-header h1 { font-size: 1.4rem; }
+
+  /* 觸控大小優化 */
+  .tl-btn-icon { padding: 7px 9px; font-size: .95rem; }
+  .tl-todo-cb  { width: 18px; height: 18px; }
+  .tl-todo-del { padding: 6px 9px; font-size: .78rem; opacity: 0.5; }
+  .tl-badge-clickable { padding: 5px 14px; font-size: .78rem; }
+  .tl-add-btn { padding: 9px 18px; font-size: .85rem; }
+  .tl-todo-add-btn { padding: 7px 12px; }
+  .tl-month-group { padding-left: 48px; }
+
+  /* 卡片左邊空間稍微壓縮，讓卡片更寬 */
+  .tl-left { width: 34px; }
+  .tl-right { padding-left: 12px; }
+  .card-body { padding: 16px 14px; }
 }

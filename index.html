@@ -418,7 +418,19 @@
       container.innerHTML = '<p style="color:var(--muted);text-align:center;padding:24px 0;">尚無事項，點擊上方按鈕新增</p>';
       return;
     }
-    container.innerHTML = all.map(function (ev) { return renderItem(ev, ev.id === '__new__'); }).join('');
+    var html = '';
+    var lastMonth = '';
+    all.forEach(function (ev) {
+      var month = (ev.date || '').slice(0, 7); // YYYY/MM
+      if (month && month !== lastMonth) {
+        var parts = month.split('/');
+        var label = parts[0] + ' 年 ' + parseInt(parts[1], 10) + ' 月';
+        html += '<div class="tl-month-group"><span class="tl-month-label">' + label + '</span></div>';
+        lastMonth = month;
+      }
+      html += renderItem(ev, ev.id === '__new__');
+    });
+    container.innerHTML = html;
   }
 
   window.timelineEdit = function (btn) {
