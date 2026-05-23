@@ -90,12 +90,23 @@
     var authHtml = nav.querySelector('.nav-auth').outerHTML;
     nav.innerHTML =
       '<a class="nav-brand" href="index.html">季浤 ♡ 柔瑄</a>' +
-      '<a href="index.html" class="active">總覽</a>' +
-      VENDOR_ORDER.map(function (id) {
-        return '<a href="vendor.html?v=' + id + '">' + VENDORS[id].name + '</a>';
-      }).join('') +
+      '<div class="nav-links">' +
+        '<a href="index.html" class="active">總覽</a>' +
+        VENDOR_ORDER.map(function (id) {
+          return '<a href="vendor.html?v=' + id + '">' + VENDORS[id].name + '</a>';
+        }).join('') +
+      '</div>' +
+      '<button class="nav-hamburger" onclick="navToggle()" aria-label="選單" aria-expanded="false">☰</button>' +
       authHtml;
   }
+
+  window.navToggle = function () {
+    var nav = document.getElementById('main-nav');
+    var btn = nav.querySelector('.nav-hamburger');
+    var isOpen = nav.classList.toggle('nav-open');
+    btn.textContent = isOpen ? '✕' : '☰';
+    btn.setAttribute('aria-expanded', String(isOpen));
+  };
 
   // ── 廠商卡片 ──
   function buildVendorGrid() {
@@ -652,6 +663,10 @@
   document.addEventListener('DOMContentLoaded', function () {
     buildNav();
     buildVendorGrid();
+    document.addEventListener('click', function (e) {
+      var nav = document.getElementById('main-nav');
+      if (nav && !nav.contains(e.target)) nav.classList.remove('nav-open');
+    });
     updateAuthUI(); // 初始狀態：隱藏新增按鈕、顯示登入提示
     if (window.google && window.google.accounts) authInit(); // GSI 已快取時的備用呼叫
 

@@ -110,13 +110,27 @@
   function buildNav(currentId) {
     var nav = document.getElementById('main-nav');
     nav.innerHTML = '<a class="nav-brand" href="index.html">季浤 ♡ 柔瑄</a>' +
-      '<a href="index.html">總覽</a>' +
-      VENDOR_ORDER.map(function (id) {
-        var v = VENDORS[id];
-        var cls = id === currentId ? ' class="active"' : '';
-        return '<a href="vendor.html?v=' + id + '"' + cls + '>' + v.name + '</a>';
-      }).join('');
+      '<div class="nav-links">' +
+        '<a href="index.html">總覽</a>' +
+        VENDOR_ORDER.map(function (id) {
+          var v = VENDORS[id];
+          var cls = id === currentId ? ' class="active"' : '';
+          return '<a href="vendor.html?v=' + id + '"' + cls + '>' + v.name + '</a>';
+        }).join('') +
+      '</div>' +
+      '<button class="nav-hamburger" onclick="navToggle()" aria-label="選單" aria-expanded="false">☰</button>';
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target)) nav.classList.remove('nav-open');
+    });
   }
+
+  window.navToggle = function () {
+    var nav = document.getElementById('main-nav');
+    var btn = nav.querySelector('.nav-hamburger');
+    var isOpen = nav.classList.toggle('nav-open');
+    btn.textContent = isOpen ? '✕' : '☰';
+    btn.setAttribute('aria-expanded', String(isOpen));
+  };
 
   function render(id) {
     var v = VENDORS[id];

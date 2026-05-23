@@ -66,6 +66,26 @@ nav a:hover, nav a.active {
   background: rgba(255,255,255,.12);
 }
 
+/* ── NAV HAMBURGER ── */
+.nav-hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 10px 14px;
+  line-height: 1;
+  border-radius: 6px;
+  transition: background .15s;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+.nav-hamburger:hover { background: rgba(255,255,255,.14); }
+
+.nav-links { display: flex; align-items: center; }
+.nav-links a { white-space: nowrap; }
+
 /* ── NAV AUTH ── */
 .nav-auth {
   margin-left: auto;
@@ -646,6 +666,39 @@ footer {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
+}
+
+/* 漢堡選單（820px 以下展開） */
+@media (max-width: 820px) {
+  nav {
+    flex-wrap: nowrap;
+    position: relative;
+    padding: 0 12px;
+  }
+  .nav-hamburger { display: flex; align-items: center; }
+  .nav-auth { margin-left: 0; }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    background: var(--rose-dk);
+    z-index: 200;
+    box-shadow: 0 6px 20px rgba(0,0,0,.2);
+    border-top: 1px solid rgba(255,255,255,.15);
+  }
+  nav.nav-open .nav-links { display: flex; }
+  .nav-links a {
+    padding: 14px 20px !important;
+    font-size: .88rem !important;
+    border-bottom: 1px solid rgba(255,255,255,.09);
+    width: 100%;
+  }
+  .nav-links a:last-child { border-bottom: none; }
 }
 
 /* 手機：沒有 hover，編輯/刪除按鈕要常駐顯示 */
