@@ -411,7 +411,6 @@
           '<div class="' + dateCls + '">' + fmtDate(ev.date) + todayTag + '</div>' +
           '<div class="' + cardCls + '">' +
             '<div class="tl-view"' + viewStyle + '>' +
-              (typeTag ? '<div class="tl-type-tag-row">' + typeTag + '</div>' : '') +
               '<div class="tl-title-row">' +
                 '<span class="tl-title-text">' + esc(ev.title) + '</span>' +
                 (canEdit
@@ -421,8 +420,11 @@
                     '</div>'
                   : '') +
               '</div>' +
-              (isVendor && ev.amount ? '<div class="tl-amount-text">' + esc(ev.amount) + '</div>' : '') +
-              badgeHtml +
+              '<div class="tl-meta-row">' +
+                (typeTag || '') +
+                (isVendor && ev.amount ? '<span class="tl-amount-text">' + esc(ev.amount) + '</span>' : '') +
+                badgeHtml +
+              '</div>' +
               renderTodos(ev) +
             '</div>' +
             '<div class="tl-edit"' + editStyle + '>' +
@@ -466,8 +468,18 @@
 
   window.timelineEdit = function (btn) {
     var item = btn.closest('.tl-item');
+    var numId = Number(item.dataset.id);
     item.querySelector('.tl-view').style.display = 'none';
-    item.querySelector('.tl-edit').style.display = 'block';
+    var editEl = item.querySelector('.tl-edit');
+    editEl.style.display = 'block';
+    // 從 localStorage 取原始資料，直接寫入 .value（不依賴 HTML attribute）
+    var ev = getEvents().find(function (e) { return e.id === numId; });
+    if (!ev) return;
+    editEl.querySelectorAll('.tl-inp').forEach(function (inp) {
+      var field = inp.dataset.field;
+      if (!field) return;
+      inp.value = field === 'date' ? dateToInput(ev.date) : (ev[field] != null ? String(ev[field]) : '');
+    });
   };
 
   window.timelineCancelEdit = function (btn) {
