@@ -106,27 +106,56 @@ nav a:hover, nav a.active {
   border: 2px solid rgba(255,255,255,.5);
   object-fit: cover;
 }
-#nav-name {
-  font-size: .78rem;
-  color: rgba(255,255,255,.9);
-  max-width: 110px;
+#nav-name { display: none; }    /* 名字隱藏，改顯示在漢堡選單 */
+.nav-signout { display: none; } /* 登出按鈕隱藏，改放漢堡選單 */
+
+/* ── 漢堡選單內的登入/登出區塊 ── */
+#nav-links-auth {
+  display: none; /* 桌機版隱藏 */
+  border-top: 1px solid rgba(255,255,255,.15);
+  margin-top: 4px;
+}
+.nav-links-auth-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+}
+.nav-links-auth-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.4);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.nav-links-auth-name {
+  font-size: .84rem;
+  color: rgba(255,255,255,.88);
+  flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.nav-signout {
+.nav-links-auth-signout {
   background: rgba(255,255,255,.15);
   border: 1px solid rgba(255,255,255,.3);
   color: rgba(255,255,255,.85);
-  font-size: .7rem;
-  padding: 3px 10px;
+  font-size: .74rem;
+  padding: 4px 12px;
   border-radius: 20px;
   cursor: pointer;
   font-family: inherit;
   transition: background .15s;
   white-space: nowrap;
+  flex-shrink: 0;
 }
-.nav-signout:hover { background: rgba(255,255,255,.28); }
+.nav-links-auth-signout:hover { background: rgba(255,255,255,.28); }
+.nav-links-hint-row {
+  padding: 13px 20px;
+  font-size: .82rem;
+  color: rgba(255,255,255,.65);
+  letter-spacing: .3px;
+}
 
 /* ── PAGE HEADER ── */
 .page-header {
@@ -699,6 +728,7 @@ footer {
     width: 100%;
   }
   .nav-links a:last-child { border-bottom: none; }
+  #nav-links-auth { display: block; }
 }
 
 /* 手機：沒有 hover，編輯/刪除按鈕要常駐顯示 */

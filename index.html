@@ -95,6 +95,7 @@
         VENDOR_ORDER.map(function (id) {
           return '<a href="vendor.html?v=' + id + '">' + VENDORS[id].name + '</a>';
         }).join('') +
+        '<div id="nav-links-auth"></div>' +
       '</div>' +
       '<button class="nav-hamburger" onclick="navToggle()" aria-label="選單" aria-expanded="false">☰</button>' +
       authHtml;
@@ -204,18 +205,29 @@
   function updateAuthUI() {
     var btnWrapper = document.getElementById('g-btn-wrapper');
     var userDiv = document.getElementById('nav-user');
+    var linksAuth = document.getElementById('nav-links-auth');
     if (currentUser) {
       if (btnWrapper) btnWrapper.style.display = 'none';
       if (userDiv) {
         userDiv.style.display = 'flex';
         var avatarEl = document.getElementById('nav-avatar');
-        var nameEl = document.getElementById('nav-name');
         if (avatarEl) { avatarEl.src = currentUser.picture || ''; avatarEl.style.display = currentUser.picture ? '' : 'none'; }
-        if (nameEl) nameEl.textContent = currentUser.name || currentUser.email;
+      }
+      if (linksAuth) {
+        var pic = currentUser.picture
+          ? '<img class="nav-links-auth-avatar" src="' + esc(currentUser.picture) + '" alt="" />'
+          : '';
+        linksAuth.innerHTML =
+          '<div class="nav-links-auth-user">' +
+            pic +
+            '<span class="nav-links-auth-name">' + esc(currentUser.name || currentUser.email) + '</span>' +
+            '<button class="nav-links-auth-signout" onclick="authSignOut()">登出</button>' +
+          '</div>';
       }
     } else {
       if (btnWrapper) btnWrapper.style.display = '';
       if (userDiv) userDiv.style.display = 'none';
+      if (linksAuth) linksAuth.innerHTML = '<div class="nav-links-hint-row">🔒 尚未登入，無法編輯</div>';
     }
     var addBtns = document.querySelector('.tl-add-btns');
     var loginHint = document.getElementById('tl-login-hint');
@@ -226,6 +238,12 @@
   window.authSignOut = function () {
     if (window.google) google.accounts.id.disableAutoSelect();
     currentUser = null;
+    var nav = document.getElementById('main-nav');
+    if (nav) {
+      nav.classList.remove('nav-open');
+      var btn = nav.querySelector('.nav-hamburger');
+      if (btn) btn.textContent = '☰';
+    }
     updateAuthUI();
     renderTimeline();
   };
@@ -434,10 +452,12 @@
     all.forEach(function (ev) {
       var month = (ev.date || '').slice(0, 7); // YYYY/MM
       if (month && month !== lastMonth) {
-        var parts = month.split('/');
-        var label = parts[0] + ' 年 ' + parseInt(parts[1], 10) + ' 月';
-        html += '<div class="tl-month-group"><span class="tl-month-label">' + label + '</span></div>';
         lastMonth = month;
+        if (/^\d{4}\/\d{2}$/.test(month)) {
+          var parts = month.split('/');
+          var label = parts[0] + ' 年 ' + parseInt(parts[1], 10) + ' 月';
+          html += '<div class="tl-month-group"><span class="tl-month-label">' + label + '</span></div>';
+        }
       }
       html += renderItem(ev, ev.id === '__new__');
     });
