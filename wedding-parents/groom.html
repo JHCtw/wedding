@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>江趙府婚禮流程・男方家長</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: one column, phone-first. Role picker on top, "my tasks" summary, then the full timeline with my moments highlighted. */
+:root{
+  --bg:#f6f4f2;
+  --surface:#ffffff;
+  --ink:#241c1d;
+  --muted:#6b6062;
+  --line:#e4dcdc;
+  --accent:#a3172b;
+  --accent-soft:#fbecee;
+  --gold:#8a6a1f;
+  --now:#1f6b4f;
+  --now-soft:#e5f3ec;
+  --display:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#161112;--surface:#211a1b;--ink:#f3eced;--muted:#b3a6a8;--line:#3a2f31;
+    --accent:#ec6b7d;--accent-soft:#3a1f24;--gold:#d8b968;--now:#5fd0a0;--now-soft:#173027;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#161112;--surface:#211a1b;--ink:#f3eced;--muted:#b3a6a8;--line:#3a2f31;
+  --accent:#ec6b7d;--accent-soft:#3a1f24;--gold:#d8b968;--now:#5fd0a0;--now-soft:#173027;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:19px;line-height:1.65}
+.wrap{max-width:430px;margin:0 auto;padding:20px 18px 60px;display:flex;flex-direction:column;gap:22px;background:var(--bg)}
+/* 寬螢幕時以手機尺寸顯示，方便預覽 */
+@media (min-width:560px){
+  body{background:var(--line);padding:24px 0}
+  .wrap{border-radius:28px;box-shadow:0 10px 40px rgba(0,0,0,.15);border:1px solid var(--line);min-height:calc(100% - 48px)}
+  .nowbar{border-radius:28px 28px 12px 12px}
+}
+header{display:flex;flex-direction:column;gap:4px;padding-top:6px}
+.date{font-size:15px;color:var(--gold);letter-spacing:.12em;font-weight:500}
+h1{font-family:var(--display);font-size:30px;line-height:1.3;margin:0;text-wrap:balance}
+.sub{color:var(--muted);font-size:16px;margin:0}
+h2{font-family:var(--display);font-size:22px;margin:0 0 10px;text-wrap:balance}
+.who{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.who button{font:inherit;font-size:19px;font-weight:700;padding:14px 8px;border-radius:12px;border:2px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;min-height:58px}
+.who button.all{grid-column:1/-1;font-weight:500;font-size:17px}
+.who button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:#fff}
+:root[data-theme="dark"] .who button[aria-pressed="true"]{color:#1b1012}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .who button[aria-pressed="true"]{color:#1b1012}}
+button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 16px}
+.places{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.place{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.place .k{font-size:15px;color:var(--muted)}
+.place .v{font-weight:700;font-size:20px}
+.place .t{font-size:15px;color:var(--muted)}
+.mine ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column}
+.mine li a{display:flex;gap:12px;padding:10px 0;border-top:1px solid var(--line);color:var(--ink);text-decoration:none}
+.mine li:first-child a{border-top:0}
+.mine .tm{flex:0 0 66px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+.mine .seat{margin:10px 0 0;padding:10px 12px;border-radius:10px;background:var(--accent-soft);font-size:17px}
+.note{font-size:16px;color:var(--muted);margin:0}
+.nowbar{display:none;position:sticky;top:0;z-index:5;background:var(--now);color:#fff;border-radius:0 0 12px 12px;padding:10px 16px;font-weight:700;font-size:17px;margin:-20px -18px 0}
+:root[data-theme="dark"] .nowbar{color:#0c1a14}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .nowbar{color:#0c1a14}}
+.nowbar.on{display:block}
+.nowbar a{color:inherit}
+.nowbar .jump{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:8px;width:100%;cursor:pointer;padding:2px 0}
+.nowbar .jump.sub{font-weight:500;font-size:16px}
+.nowbar .jump:focus-visible{outline:3px solid #fff;outline-offset:2px;border-radius:6px}
+.nowbar .go{margin-left:auto;flex:0 0 auto;font-size:15px;border:1px solid currentColor;border-radius:999px;padding:0 10px}
+.nowbar .jump.sub .go{border:0;padding:0 4px;font-size:18px}
+.phase{display:flex;flex-direction:column;gap:10px}
+.phase-head{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;width:100%;cursor:pointer;border-bottom:2px solid var(--accent);padding-bottom:6px;color:var(--ink)}
+.phase-head:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:6px}
+.phase-head h2{margin:0;flex:0 0 auto}
+.phase-head .where{flex:1;text-align:right;font-size:15px;color:var(--muted)}
+.phase.ended .phase-head .where::before{content:"已結束・";color:var(--now);font-weight:700}
+.phase-body{display:flex;flex-direction:column;gap:10px}
+.phase.collapsed .phase-body{display:none}
+.phase:not(.collapsed)>.phase-head .chev{transform:rotate(180deg)}
+.seg{display:grid;grid-template-columns:70px 1fr;gap:12px;padding:12px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line);scroll-margin-top:100px}
+.seg .tm{font-weight:700;font-variant-numeric:tabular-nums;font-size:17px;line-height:1.4;color:var(--muted)}
+.seg .tm small{display:block;font-weight:400;font-size:14px}
+.seg h3{margin:0;font-size:20px;line-height:1.4}
+.seg p{margin:4px 0 0;font-size:17px;color:var(--muted)}
+.seg.quiet{padding:8px 14px}
+.seg.quiet h3{font-size:18px;font-weight:500}
+.seg p{display:none}
+.seg.open p{display:block}
+.seg .task{display:none}
+.seg.open .task{display:block}
+.seg-head{all:unset;box-sizing:border-box;display:flex;align-items:flex-start;gap:8px;width:100%;cursor:pointer;color:var(--ink)}
+.seg-head:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:6px}
+.seg-head h3{flex:1}
+.chev{flex:0 0 22px;width:22px;height:22px;margin-top:4px;color:var(--muted);transition:transform .15s}
+.seg.open .chev{transform:rotate(180deg)}
+@media (prefers-reduced-motion: reduce){.chev{transition:none}}
+.seg.has{border:2px solid var(--accent)}
+.seg.has .tm{color:var(--accent)}
+.task{margin-top:10px;padding:10px 12px;background:var(--accent-soft);border-radius:10px;font-size:18px;color:var(--ink)}
+.task b{color:var(--accent)}
+.task ul{margin:4px 0 0;padding-left:1.2em}
+.task li+li{margin-top:6px}
+.task .r{font-size:15px;font-weight:700;color:var(--accent);margin-top:6px}
+.seg.now{outline:4px solid var(--now);outline-offset:2px}
+.seg.now .tm{color:var(--now)}
+.seg.past{background:var(--bg);border-color:var(--line);filter:grayscale(1);opacity:.5}
+.seg.past .tm,.seg.past h3{color:var(--muted)}
+.phase.ended .phase-head{filter:grayscale(1);opacity:.55;border-bottom-color:var(--line)}
+.phase.ended .phase-head h2{color:var(--muted)}
+.badge{display:none;font-size:13px;font-weight:700;background:var(--now);color:#fff;border-radius:6px;padding:1px 8px;margin-left:8px;vertical-align:middle}
+.seg.now .badge{display:inline-block}
+.sidechip{display:none;align-self:flex-start;font-weight:700;font-size:17px;color:var(--accent);border:2px solid var(--accent);border-radius:999px;padding:4px 14px}
+.sidechip.on{display:block}
+.pill{display:inline-block;font-size:14px;font-weight:700;line-height:1.5;border-radius:6px;padding:0 7px;margin-right:6px;vertical-align:1px;background:var(--accent);color:#fff;white-space:nowrap}
+.tpill{margin:0 0 0 8px;font-size:13px;vertical-align:2px}
+:root[data-theme="dark"] .pill{color:#1b1012}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pill{color:#1b1012}}
+.task ul{list-style:none;padding-left:0}
+#prepbox summary{display:flex;align-items:center;gap:8px;cursor:pointer;font-family:var(--display);font-size:21px;font-weight:700;list-style:none;min-height:36px}
+#prepbox summary::-webkit-details-marker{display:none}
+#prepbox summary::after{content:"展開";margin-left:auto;font-family:var(--body);font-size:15px;font-weight:500;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:2px 12px}
+#prepbox[open] summary::after{content:"收起"}
+#prepbox[open] summary{margin-bottom:8px}
+.prep{margin:0;padding:0;list-style:none;display:flex;flex-direction:column}
+.prep li{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line);font-size:18px}
+.prep input{flex:0 0 auto;width:28px;height:28px;margin:2px 0 0;accent-color:var(--accent);cursor:pointer}
+.prep label{flex:1;cursor:pointer}
+.prep li.done label{color:var(--muted);text-decoration:line-through}
+.count{font-family:var(--body);font-size:16px;font-weight:700;color:var(--gold);margin-left:6px}
+.prep li:first-child{border-top:0;padding-top:0}
+#switch{display:flex;gap:14px;flex-wrap:wrap}
+#switch a{color:var(--accent);font-size:16px}
+.toggle{font:inherit;font-size:16px;align-self:flex-start;background:none;border:1px solid var(--line);color:var(--muted);border-radius:10px;padding:8px 12px;cursor:pointer}
+footer{border-top:1px dashed var(--line);padding-top:14px;display:flex;flex-direction:column;gap:8px;font-size:15px;color:var(--muted)}
+footer label[hidden]{display:none}
+footer label{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+footer select{font:inherit;font-size:15px;padding:4px 8px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+@media (max-width:380px){.places{grid-template-columns:1fr}.seg{grid-template-columns:58px 1fr}}
+@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nowbar" id="nowbar" role="status"></div>
+
+  <header>
+    <div class="date">2026.12.06（日）・台北漢來大飯店</div>
+    <h1>季浤 &amp; 柔瑄<br>文定與喜宴流程</h1>
+    <p class="sub">時間是預估的，當天以主持人 Kelly 的引導為準。</p>
+  </header>
+
+  <section class="card mine" id="mine" aria-live="polite"></section>
+
+
+  <div id="timeline" style="display:flex;flex-direction:column;gap:26px"></div>
+
+  <footer>
+    <div>如有問題請找季浤</div>
+    <label for="sim" id="simrow" hidden>測試用：模擬當天時間
+      <select id="sim"><option value="">不模擬</option></select>
+    </label>
+  </footer>
+</div>
+
+<script>
+const FIXED="g";
+const SIDES={g:"男方家長",b:"女方家長"};
+const HASH={g:"groom-family",b:"bride-family",all:"all"};
+const PREP={
+  g:[["一起","祝福的話：文定奉茶時要說，請各想好一句給新人的吉祥話。"]],
+  b:[["一起","祝福的話：文定奉茶時要說，請各想好一句給新人的吉祥話。"],["一起","奶奶、姑姑也要喝甜茶，請提醒她們想好一句祝福的話。"],["媽媽","金飾：保管雙方金飾（新娘項鍊、金戒；新郎項鍊、金戒），當天帶到現場交給 Kelly。"]]
+};
+const B="一起";
+const both=(...l)=>({g:l.map(x=>[B,x]),b:l.map(x=>[B,x])});
+const PHASES=[
+ {name:"梳化",where:"新娘休息室・06:00–09:30",segs:[
+  {id:"mu-bride",at:"06:00",min:360,title:"新娘開妝",desc:"新娘 06:00–09:00 化妝。"},
+  {id:"mu-moms",at:"06:30",min:390,title:"媽媽化妝",desc:"女方媽媽（Yan 老師）、男方媽媽（利利老師），06:30–08:00。",
+   t:{b:[["媽媽","06:30 到新娘休息室化妝（Yan 老師），約 08:00 完成。"]],g:[["媽媽","06:30 到新娘休息室化妝（利利老師），約 08:00 完成。"]]}},
+  {id:"mu-elders",at:"08:00",min:480,title:"奶奶、姑姑化妝",desc:"女方奶奶（Yan 老師）、女方姑姑（利利老師），08:00–09:00，不用假睫毛。",
+   t:{b:[[B,"提醒奶奶、姑姑 08:00 到新娘休息室化妝。"]]}},
+  {id:"mu-dads",at:"09:00",min:540,title:"爸爸、新郎化妝",desc:"女方爸爸（Yan 老師）、男方爸爸（利利老師）、新郎，09:00–09:30。",
+   t:{b:[["爸爸","09:00 到新娘休息室化妝（Yan 老師），約 09:30 完成。"]],g:[["爸爸","09:00 到新娘休息室化妝（利利老師），約 09:30 完成。"]]}}
+ ]},
+ {name:"文定儀式",where:"水晶 E 廳・09:30–10:30",segs:[
+  {id:"prep",at:"09:30",min:570,title:"準備",desc:"新娘完妝，主持人清點儀式物品。",
+   t:{b:[["媽媽","您是金飾保管人，請保管好雙方的金飾（新娘項鍊、金戒；新郎項鍊、金戒）。"]]}},
+  {id:"arrive",at:"09:50",min:590,title:"雙方到場、互相認識",desc:"雙方親友在水晶 E 廳集合，把聘禮放上聘禮桌。",
+   t:{g:[[B,"09:50 前到水晶 E 廳。"],[B,"新人會把文定用的紅包交給您，奉茶時會用到。"]],
+      b:[[B,"09:50 前到水晶 E 廳。"],[B,"新人會把文定用的紅包交給您，奉茶時會用到。"],["媽媽","把金飾交給主持人 Kelly。"]]}},
+  {id:"seat",at:"10:00",min:600,title:"上座",desc:"雙方親友依序入座，排成圓弧形，主持人確認稱呼。",
+   t:{g:[[B,"依主持人安排，坐在男方的位子。"]],b:[[B,"依主持人安排，坐在女方的位子（與奶奶、姑姑同側）。"]]}},
+  {id:"tea",at:"",min:603,title:"奉茶",desc:"新人依序奉甜茶並改口，奉完茶後先到旁邊迴避。",
+   t:both("喝完甜茶後，把紅包捲起來放進茶杯裡。")},
+  {id:"cup",at:"",min:607,title:"壓茶甌",desc:"新人再次進場收杯。紅包由新郎哥哥保管。",
+   t:both("把茶杯（含紅包）遞還給新人，說一句祝福的話。")},
+  {id:"gift",at:"",min:610,title:"下聘",desc:"新娘坐上高椅、腳踩矮椅，喝茶長輩移到觀禮席。",
+   t:both("雙方主婚人到台前，拿金飾盒一起合照。")},
+  {id:"return",at:"",min:612,title:"回禮",desc:"以西式喜餅做代表合影。"},
+  {id:"ring",at:"",min:614,title:"戴戒指",desc:"新人互戴金戒指（男左女右）。"},
+  {id:"gold",at:"",min:615,title:"穿金戴銀",desc:"新郎媽媽為新娘戴項鍊。",
+   t:{g:[["媽媽","為新娘戴上項鍊。"]]}},
+  {id:"meet",at:"",min:617,title:"戴見面禮",desc:"新娘媽媽為新郎戴項鍊。",
+   t:{b:[["媽媽","為新郎戴上項鍊。戴之前先把項鍊的開口打開。"]]}},
+  {id:"yuan",at:"",min:618,title:"吃湯圓",desc:"新人互餵湯圓，儀式圓滿。"},
+  {id:"photo",at:"10:20",min:620,title:"大合照",desc:"順序：奉茶長輩 → 男方親友 → 雙方主婚人 → 女方親友。飯店會發湯圓給觀禮親友。",
+   t:both("輪到「雙方主婚人」時上前合照。","合照後，把聘禮桌上的西式喜餅和中式大餅發給現場親友。")},
+  {id:"dress",at:"10:30",min:630,title:"新娘換白紗",desc:"可以稍作休息。"}
+ ]},
+ {name:"彩排",where:"從水晶 E 廳進出・11:00–11:30",segs:[
+  {id:"rehearsal",at:"11:00",min:660,title:"現場彩排",desc:"走一次第一次進場的路線和流程。參加：新人、主婚人、遞戒人、主持人、小管家。",
+   t:both("請參加彩排，記住自己進場和上台的位置。")}
+ ]},
+ {name:"喜宴",where:"3 樓 鉑金 C 廳・12:00 開席",segs:[
+  {id:"welcome",at:"11:30",min:690,title:"迎賓",desc:"招待帶賓客入座。開放入場的時間會依彩排狀況提早或延後。"},
+  {id:"notice",at:"12:10",min:730,title:"預告開場",desc:"主持人提醒五分鐘後開場。"},
+  {id:"enter1",at:"12:15",min:735,title:"第一次進場",desc:"開場影片後，男方主婚人、新郎、新娘與媽媽依序進場，交手儀式後新人一起走上紅毯。",
+   t:{g:[[B,"開場影片後，兩位一起進場，走到紅毯中央。"],[B,"新郎擁抱、鞠躬後，入座主桌。"]],
+      b:[["爸爸","這段不用進場，先坐在主桌。"],["媽媽","陪新娘一起進場。"],["媽媽","交手儀式：擁抱新娘，把新娘的手交給新郎。"],["媽媽","新人鞠躬後，飯店人員會帶您入座。"]]}},
+  {id:"vow",at:"",min:742,title:"交換誓言、交換戒指",desc:"新郎先、新娘後。遞戒人是新娘朋友曉琪。"},
+  {id:"thanks",at:"",min:747,title:"謝親恩",desc:"新郎致詞、播放謝親恩影片。",
+   t:both("影片播完後主持人會請您上台，和新人擁抱。","和新人一起舉杯感謝賓客，再回主桌入座。")},
+  {id:"eat",at:"12:35",min:755,title:"開席用餐",desc:"新人在主桌用餐。"},
+  {id:"change1",at:"12:45",min:765,title:"新娘換裝",desc:"新娘回休息室換第二套。"},
+  {id:"enter2",at:"13:15",min:795,title:"第二次進場、快問快答",desc:"新人上台，快問快答共 10 題，前 3 名有小禮物。"},
+  {id:"toast",at:"13:30",min:810,title:"逐桌敬酒",desc:"小管家帶新人和雙方主婚人到每一桌敬酒。",
+   t:both("跟著小管家和新人，一起到每一桌敬酒。")},
+  {id:"drinkcam",at:"13:45",min:825,title:"Drink Cam",desc:"新人到賓客桌邊進行互動拍攝。"},
+  {id:"change2",at:"14:00",min:840,title:"新娘換裝",desc:"新娘回休息室換第三套。"},
+  {id:"enter3",at:"14:30",min:870,title:"第三次進場、感謝詞",desc:"播放當天的快剪影片，新郎、新娘上台致謝。"},
+  {id:"bye",at:"14:40",min:880,title:"送客",desc:"新人到門口送客。"}
+ ]}
+];
+const ALL=PHASES.flatMap(ph=>ph.segs);
+const prevAt=s=>{const i=ALL.indexOf(s);for(let j=i;j>=0;j--)if(ALL[j].at)return ALL[j].at;return ""};
+const esc=x=>String(x).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const pill=w=>w===B?"":`<span class="pill">${w}</span>`;
+let prepOpen=false;const openSegs=new Set();
+const CHEV='<svg class="chev" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+// groups: [[label|null, [[who,text],...]], ...]
+const tasksFor=(s,r)=>{if(!s.t)return[];
+  if(r==="all")return ["g","b"].filter(k=>s.t[k]).map(k=>[SIDES[k],s.t[k]]);
+  return s.t[r]?[[null,s.t[r]]]:[]};
+const whoOf=l=>{const w=[...new Set(l.map(x=>x[0]))];return w.includes(B)||w.length>1?B:w[0]};
+
+let role="all";
+function store(k,v){try{if(v!==undefined)localStorage.setItem(k,v);return localStorage.getItem(k)}catch(e){return null}}
+
+function render(){
+  const side=role!=="all";
+  const mine=document.getElementById("mine");
+  if(!side){
+    mine.innerHTML='<h2>完整流程</h2><p class="note">選擇上面的男方或女方，就會列出爸爸、媽媽今天要做的事，並在流程中標出來。</p>';
+  }else{
+    const done=PREP[role].filter((_,i)=>store(`wf-prep-${role}-${i}`)==="1").length;
+    mine.innerHTML=`<details id="prepbox"${prepOpen?" open":""}><summary><span>需要提早準備的事</span><span class="count">${done}/${PREP[role].length}</span></summary><ul class="prep">`+
+      PREP[role].map(([w,x],i)=>{const id=`prep-${role}-${i}`,on=store(`wf-${id}`)==="1";
+        return `<li class="${on?"done":""}"><input type="checkbox" id="${id}" data-key="wf-${id}"${on?" checked":""}><label for="${id}">${pill(w)}${esc(x)}</label></li>`}).join("")+
+      `</ul><p class="note">打勾後只會記在這支手機上。</p></details>`;
+  }
+  const tl=document.getElementById("timeline");
+  tl.innerHTML=PHASES.map((ph,pi)=>`<section class="phase" id="p-${pi}"><button type="button" class="phase-head" aria-expanded="true" aria-controls="pb-${pi}"><h2>${ph.name}</h2><span class="where">${ph.where}</span>${CHEV}</button><div class="phase-body" id="pb-${pi}">`+
+    ph.segs.map(s=>{
+      const ts=tasksFor(s,role);
+      const has=ts.length>0, quiet=side&&!has;
+      const task=has?`<div class="task">${side?"<b>要做的事：</b>":""}${ts.map(([lab,l])=>`${lab?`<div class="r">${lab}</div>`:""}<ul>${l.map(([w,x])=>`<li>${pill(w)}${esc(x)}</li>`).join("")}</ul>`).join("")}</div>`:"";
+      const op=openSegs.has(s.id);
+      return `<article class="seg${op?" open":""}" id="s-${s.id}"><div class="tm">${s.at||"<small>接著</small>"}</div><div><button type="button" class="seg-head" aria-expanded="${op}" aria-controls="d-${s.id}"><h3>${esc(s.title)}${side&&s.t&&s.t[role]?[...new Set(s.t[role].map(x=>x[0]))].filter(w=>w!==B).map(w=>`<span class="pill tpill">${w}</span>`).join(""):""}<span class="badge">現在</span></h3>${CHEV}</button><p id="d-${s.id}">${esc(s.desc)}</p>${task}</div></article>`;
+    }).join("")+`</div></section>`).join("");
+  tickNow();
+}
+
+function nowMinutes(){
+  const sim=document.getElementById("sim").value;
+  if(sim)return +sim;
+  const d=new Date();
+  if(d.getFullYear()===2026&&d.getMonth()===11&&d.getDate()===6)return d.getHours()*60+d.getMinutes();
+  return null;
+}
+const phaseManual={};
+function applyPhases(m){
+  PHASES.forEach((ph,i)=>{
+    const el=document.getElementById("p-"+i);if(!el)return;
+    const next=PHASES[i+1];
+    const ended=m!==null&&!!next&&m>=next.segs[0].min;
+    // 手動設定只在「結束狀態」改變前有效；一旦時間跨過結束點，就回到自動收起
+    if(i in phaseManual&&phaseManual[i].ended!==ended)delete phaseManual[i];
+    const col=i in phaseManual?phaseManual[i].col:ended;
+    el.classList.toggle("ended",ended);
+    el.classList.toggle("collapsed",col);
+    el.querySelector(".phase-head").setAttribute("aria-expanded",!col);
+  });
+}
+function goTo(id){
+  const pi=PHASES.findIndex(ph=>ph.segs.some(x=>x.id===id));
+  phaseManual[pi]={col:false,ended:document.getElementById("p-"+pi).classList.contains("ended")};openSegs.add(id);
+  const el=document.getElementById("s-"+id);
+  el.classList.add("open");el.querySelector(".seg-head").setAttribute("aria-expanded","true");
+  applyPhases(nowMinutes());
+  el.scrollIntoView({block:"start"});
+}
+function tickNow(){
+  const m=nowMinutes(), bar=document.getElementById("nowbar");
+  applyPhases(m);
+  document.querySelectorAll(".seg").forEach(el=>el.classList.remove("now","past"));
+  if(m===null){bar.classList.remove("on");return}
+  let cur=null;
+  for(const s of ALL){if(s.min<=m)cur=s}
+  if(!cur){bar.classList.add("on");bar.textContent="今天 06:00 開始梳化，地點在新娘休息室";return}
+  ALL.forEach(s=>{const el=document.getElementById("s-"+s.id);if(!el)return;if(s===cur)el.classList.add("now");else if(s.min<cur.min)el.classList.add("past")});
+  const next=role==="all"?null:ALL.slice(ALL.indexOf(cur)+1).find(s=>s.t&&s.t[role]);
+  bar.classList.add("on");
+  bar.innerHTML=`<button type="button" class="jump" data-go="${cur.id}">現在：${esc(cur.title)}（約 ${prevAt(cur)}）<span class="go">前往 ›</span></button>`+(next?`<button type="button" class="jump sub" data-go="${next.id}">下一件要做的事：${esc(next.title)}<span class="go">›</span></button>`:"");
+}
+
+function fromHash(){return FIXED}
+function setRole(r){
+  role=r;store("wf-side",r);
+  if(location.hash.slice(1)!==HASH[r])history.replaceState(null,"","#"+HASH[r]);
+  render();window.scrollTo(0,0);
+}
+
+document.getElementById("mine").addEventListener("toggle",e=>{if(e.target.id==="prepbox")prepOpen=e.target.open},true);
+document.getElementById("mine").addEventListener("change",e=>{const c=e.target.closest("input[data-key]");if(!c)return;try{localStorage.setItem(c.dataset.key,c.checked?"1":"0")}catch(_){}render()});
+document.getElementById("mine").addEventListener("click",e=>{const a=e.target.closest("[data-jump]");if(!a)return;e.preventDefault();document.getElementById("s-"+a.dataset.jump).scrollIntoView({block:"start"})});
+document.getElementById("nowbar").addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(b)goTo(b.dataset.go)});
+document.getElementById("timeline").addEventListener("click",e=>{const ph=e.target.closest(".phase-head");
+  if(ph){const el=ph.closest(".phase"),i=+el.id.slice(2);phaseManual[i]={col:!el.classList.contains("collapsed"),ended:el.classList.contains("ended")};applyPhases(nowMinutes());return}
+  const b=e.target.closest(".seg-head");if(!b)return;const el=b.closest(".seg"),id=el.id.slice(2);
+  if(openSegs.has(id))openSegs.delete(id);else openSegs.add(id);
+  const on=openSegs.has(id);el.classList.toggle("open",on);b.setAttribute("aria-expanded",on)});
+
+const sim=document.getElementById("sim");
+ALL.forEach(s=>{const o=document.createElement("option");o.value=s.min+1;o.textContent=`${String(Math.floor((s.min+1)/60)).padStart(2,"0")}:${String((s.min+1)%60).padStart(2,"0")} ${s.title}`;sim.appendChild(o)});
+sim.addEventListener("change",()=>{tickNow();const n=document.querySelector(".seg.now");if(n)n.scrollIntoView({block:"center"})});
+// 只有網址加上 #test 才顯示模擬時間
+const simrow=document.getElementById("simrow");
+const syncTest=()=>{const on=location.hash==="#test";simrow.hidden=!on;if(!on&&sim.value){sim.value="";tickNow()}};
+window.addEventListener("hashchange",syncTest);syncTest();
+setInterval(tickNow,60000);
+
+role=fromHash();render();
+</script>
+</body>
+</html>
