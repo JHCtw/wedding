@@ -22,8 +22,10 @@
 網址後加 `#test`，頁面底部會出現「模擬當天時間」。
 
 ```
-https://<帳號>.github.io/<repo>/wedding-parents/bride.html#test
+https://jhctw.github.io/wedding/wedding-parents/bride.html#test
 ```
+
+網址後加 `#live`，會把「今天」當成婚禮當天，依手機的真實時間顯示「現在」、反灰與自動收起，適合實際走一遍。
 
 ## 修改流程
 

@@ -143,7 +143,7 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid var(
 #switch a{color:var(--accent);font-size:16px}
 .toggle{font:inherit;font-size:16px;align-self:flex-start;background:none;border:1px solid var(--line);color:var(--muted);border-radius:10px;padding:8px 12px;cursor:pointer}
 footer{border-top:1px dashed var(--line);padding-top:14px;display:flex;flex-direction:column;gap:8px;font-size:15px;color:var(--muted)}
-footer label[hidden]{display:none}
+footer [hidden]{display:none}
 footer label{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 footer select{font:inherit;font-size:15px;padding:4px 8px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
 @media (max-width:380px){.places{grid-template-columns:1fr}.seg{grid-template-columns:58px 1fr}}
@@ -166,6 +166,7 @@ footer select{font:inherit;font-size:15px;padding:4px 8px;border-radius:8px;bord
   <div id="timeline" style="display:flex;flex-direction:column;gap:26px"></div>
 
   <footer>
+    <div id="livetag" hidden><b>測試模式（#live）：</b>把今天當成婚禮當天，依手機時間顯示。</div>
     <div>如有問題請找季浤</div>
     <label for="sim" id="simrow" hidden>測試用：模擬當天時間
       <select id="sim"><option value="">不模擬</option></select>
@@ -285,6 +286,8 @@ function nowMinutes(){
   const sim=document.getElementById("sim").value;
   if(sim)return +sim;
   const d=new Date();
+  // #live：把今天當成婚禮當天，用手機的真實時間跑
+  if(location.hash==="#live")return d.getHours()*60+d.getMinutes();
   if(d.getFullYear()===2026&&d.getMonth()===11&&d.getDate()===6)return d.getHours()*60+d.getMinutes();
   return null;
 }
@@ -346,7 +349,9 @@ ALL.forEach(s=>{const o=document.createElement("option");o.value=s.min+1;o.textC
 sim.addEventListener("change",()=>{tickNow();const n=document.querySelector(".seg.now");if(n)n.scrollIntoView({block:"center"})});
 // 只有網址加上 #test 才顯示模擬時間
 const simrow=document.getElementById("simrow");
-const syncTest=()=>{const on=location.hash==="#test";simrow.hidden=!on;if(!on&&sim.value){sim.value="";tickNow()}};
+const liveTag=document.getElementById("livetag");
+const syncTest=()=>{const on=location.hash==="#test";simrow.hidden=!on;if(!on&&sim.value)sim.value="";
+  liveTag.hidden=location.hash!=="#live";tickNow()};
 window.addEventListener("hashchange",syncTest);syncTest();
 setInterval(tickNow,60000);
 
